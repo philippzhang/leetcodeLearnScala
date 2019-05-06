@@ -162,7 +162,7 @@ object Utilitys {
           val endTime = System.currentTimeMillis
 
           //格式化打印
-          if (!("Unit" == returnTypeName)) { //打印输出
+          if (!("Unit".equals( returnTypeName))) { //打印输出
             try
               callBack.printOutput(outputObj)
             catch {

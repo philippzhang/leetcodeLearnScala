@@ -1,7 +1,8 @@
 package com.learn.java.leetcode.base
 
 
-import com.learn.java.leetcode.base.utils.{Build, Format, PrintObj}
+import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
+import com.learn.java.leetcode.base.utils.{Build, Format, PrintObj, StringUtil}
 
 import scala.collection.mutable.ListBuffer
 
@@ -37,9 +38,47 @@ class CallBack {
       if (parameterName.equals("[I")) {
         val array = Build.buildArray(data)
         inputObjArr(j) = array
+      } else if (parameterName.equals("[C")) {
+        val array = Build.buildArrayChar(data)
+        inputObjArr(j) = array
+      } else if (parameterName.equals("[[I")) {
+        val matrix: Array[Array[Int]] = Build.buildMatrix(data)
+        inputObjArr(j) = matrix
+      } else if (parameterName.equals("[Ljava.lang.String;")) {
+        val array: Array[String] = Build.buildArrayString(data);
+        inputObjArr(j) = array;
       } else if (parameterName.equals("int")) {
-        val v: Int = data.toInt
+        val v = data.toInt
         inputObjArr(j) = v
+      } else if (parameterName.equals("long")) {
+        val v = data.toLong
+        inputObjArr(j) = v
+      } else if (parameterName.equals("double")) {
+        val v = data.toDouble
+        inputObjArr(j) = v
+      } else if (parameterName.equals("float")) {
+        val v = data.toFloat
+        inputObjArr(j) = v
+      } else if (parameterName.equals("boolean")) {
+        val v = data.toBoolean
+        inputObjArr(j) = v
+      } else if (parameterName.equals("short")) {
+        val v = data.toShort
+        inputObjArr(j) = v
+      } else if (parameterName.equals("java.lang.String")) {
+        inputObjArr(j) = StringUtil.changeStr(data)
+      } else if (parameterName.equals("com.learn.java.leetcode.base.structure.ListNode")) {
+        val listNode = Build.buildListNode(data)
+        inputObjArr(j) = listNode
+      } else if (parameterName.equals("[Lcom.learn.java.leetcode.base.structure.ListNode;")) {
+        val listNode: Array[ListNode] = Build.buildListNodeArray(data)
+        inputObjArr(j) = listNode
+      } else if (parameterName.equals("com.learn.java.leetcode.base.structure.TreeNode")) {
+        val treeNode: TreeNode = Build.buildBinaryTree(data)
+        inputObjArr(j) = treeNode
+      } else if (parameterName.equals( "java.util.List")) {
+        val list = Build.buildList(data)
+        inputObjArr(j) = list
       }
       j += 1
     }

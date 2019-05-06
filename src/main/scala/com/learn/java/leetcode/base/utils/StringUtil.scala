@@ -36,10 +36,14 @@ object StringUtil {
     * @return
     */
   def changeStr(temp: String): String = {
-    if (temp == null || temp == "null") return null
-    var ret:String = null
-    if (temp.startsWith("\"")) ret = temp.substring(1)
-    if (temp.endsWith("\"")) ret = temp.substring(0, temp.length - 1)
+    if (temp == null || temp .equals( "null")) return null
+    var ret:String = temp
+    if (ret.startsWith("\"")) {
+      ret = ret.substring(1)
+    }
+    if (ret.endsWith("\"")) {
+      ret = ret.substring(0, ret.length - 1)
+    }
     ret
   }
 }
