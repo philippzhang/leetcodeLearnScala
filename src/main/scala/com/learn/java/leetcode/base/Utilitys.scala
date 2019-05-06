@@ -2,8 +2,7 @@ package com.learn.java.leetcode.base
 
 
 import java.io.IOException
-import java.util
-import java.util.{ArrayList, List}
+import java.lang.reflect.Method
 
 import com.learn.java.leetcode.base.utils.StringUtil
 import org.apache.commons.lang.StringUtils
@@ -11,9 +10,10 @@ import org.apache.commons.lang.StringUtils
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 import scala.util.control.Breaks
+import scala.reflect.runtime.{universe => ru}
 
 object Utilitys {
-
+  val classMirror = ru.runtimeMirror(getClass.getClassLoader)         //获取运行时类镜像
   def test(callBack: CallBack): Boolean = {
     val testList = readTxtFile(callBack)
     //类方法定义
@@ -85,23 +85,30 @@ object Utilitys {
 
       val algorithmClass = Class.forName(packageName + "." + algorithmClassName)
       val methods = algorithmClass.getMethods
+
+      val classTest = classMirror.staticModule(packageName + "." + algorithmClassName)          //获取需要反射object
+      val methodsTest = classMirror.reflectModule(classTest)                  //构造获取方式的对象
+      val objMirror = classMirror.reflect(methodsTest.instance)               //反射结果赋予对象
+      val methodTest = methodsTest.symbol.typeSignature.member(ru.TermName(algorithmFuncName)).asMethod  //反射调用函数
+
       var i:Int = 0
       while (i < methods.size ){
-        val method = methods(i)
-        if (algorithmFuncName .equals(methods(i).getName)) {
+        val method:Method = methods(i)
+        var parameterTypes: Array[Class[_]] = null
+        if (algorithmFuncName .equals(method.getName)) {
           var invokeFlag = true
           // 得到方法的返回值类型的类型
           val returnType = methods(i).getReturnType
           val returnTypeName = returnType.getName
 
-          val parameterTypes = methods(i).getParameterTypes
+           parameterTypes = methods(i).getParameterTypes
           val paramLength = parameterTypes.length
-          val inputObjArr = new Array[AnyRef](paramLength)
+          val inputObjArr = new Array[Any](paramLength)
 
           //临时集合，用于输入和输出之间传递
           val tempList:ListBuffer[_] = new ListBuffer()
 
-          System.out.println("输入:")
+          println("输入:")
           //打印输入参数
           try
             callBack.printInput(dataList, paramLength)
@@ -122,12 +129,30 @@ object Utilitys {
               invokeFlag = false
           }
 
+
+
           val startTime = System.currentTimeMillis
           //调用算法
-          var outputObj:AnyRef = null
+          var outputObj:Any = null
           try
               if (invokeFlag){
-                outputObj = method.invoke(algorithmClass.newInstance, inputObjArr)
+                //val m: Method = algorithmClass.getDeclaredMethod(algorithmFuncName,classOf[Array[Int]],classOf[Int])
+                //val o =algorithmClass.newInstance
+                //outputObj = method.invoke(o, inputObjArr(0),inputObjArr(1))
+                if(inputObjArr.length==0){
+                  outputObj = objMirror.reflectMethod(methodTest)()
+                }else if(inputObjArr.length==1){
+                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0))
+                }else if(inputObjArr.length==2){
+                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0),inputObjArr(1))
+                }else if(inputObjArr.length==3){
+                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0),inputObjArr(1),inputObjArr(2))
+                }else if(inputObjArr.length==4){
+                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0),inputObjArr(1),inputObjArr(2),inputObjArr(3))
+                }else if(inputObjArr.length==5){
+                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0),inputObjArr(1),inputObjArr(2),inputObjArr(3),inputObjArr(4))
+                }
+
               }
           catch {
             case e: Exception =>
@@ -189,7 +214,7 @@ object Utilitys {
             }
           }
 
-          System.out.println("计算时长: " + (endTime - startTime) + "ms")
+          println("计算时长: " + (endTime - startTime) + "ms")
 
         }
         i+=1

@@ -1,7 +1,7 @@
 package com.learn.java.leetcode.base
 
 
-import com.learn.java.leetcode.base.utils.Print
+import com.learn.java.leetcode.base.utils.{Build, Format, PrintObj}
 
 import scala.collection.mutable.ListBuffer
 
@@ -16,7 +16,7 @@ class CallBack {
     if (dataList == null) return
     var i: Int = 0
     while (i < dataList.length && i < paramLength) {
-      if (i < paramLength) Print.print(dataList(i))
+      if (i < paramLength) PrintObj.printObj(dataList(i))
       i += 1
     }
   }
@@ -29,8 +29,20 @@ class CallBack {
     * @param dataList       读入数据列表
     * @param tempList       临时缓存，用于数据传递
     */
-  def inputBuild(parameterTypes: Array[Class[_]], inputObjArr: Array[AnyRef], dataList: ListBuffer[String], tempList: ListBuffer[_]): Unit = {
-
+  def inputBuild(parameterTypes: Array[Class[_]], inputObjArr: Array[Any], dataList: ListBuffer[String], tempList: ListBuffer[_]): Unit = {
+    var j: Int = 0
+    while (j < parameterTypes.length) {
+      val parameterName = parameterTypes(j).getName
+      val data: String = dataList(j)
+      if (parameterName.equals("[I")) {
+        val array = Build.buildArray(data)
+        inputObjArr(j) = array
+      } else if (parameterName.equals("int")) {
+        val v: Int = data.toInt
+        inputObjArr(j) = v
+      }
+      j += 1
+    }
   }
 
   /**
@@ -40,7 +52,7 @@ class CallBack {
     */
   def printOutput(outputObj: Any): Unit = {
     System.out.println("格式输出:")
-    Print.print(outputObj)
+    PrintObj.printObj(outputObj)
   }
 
   /**
@@ -52,8 +64,32 @@ class CallBack {
     * @param dataList       读入数据列表
     * @param tempList       临时缓存，用于数据传递
     */
-  def outputVerify(inputObjArr: Array[AnyRef], trueResultList: ListBuffer[String], outputObj: Any, dataList: ListBuffer[String], tempList: ListBuffer[_]): Boolean = {
-    true
+  def outputVerify(inputObjArr: Array[Any], trueResultList: ListBuffer[String], outputObj: Any, dataList: ListBuffer[String], tempList: ListBuffer[_]): Boolean = {
+    var resultFlag = false
+    val testResult = Format.format(outputObj)
+    var i = 0
+    while (i < trueResultList.size) {
+      val trueResult = trueResultList(i)
+      if (trueResult.equals("null") && outputObj == null) {
+        printOutVerify(trueResultList, null, true)
+        return true
+      }
+      try {
+        resultFlag = trueResult == testResult
+        if (resultFlag) {
+          printOutVerify(trueResultList, testResult, resultFlag)
+          return true
+        }
+      } catch {
+        case e: Exception =>
+          e.printStackTrace()
+          printOutVerify(trueResultList, e.getMessage, false)
+          return false
+      }
+      i += 1
+    }
+    printOutVerify(trueResultList, testResult, resultFlag)
+    return resultFlag
   }
 
   /**
@@ -64,7 +100,21 @@ class CallBack {
     * @param resultFlag     验证结果
     */
   def printOutVerify(trueResultList: ListBuffer[String], testResult: String, resultFlag: Boolean): Unit = {
-
+    println("输出结果:")
+    println(testResult)
+    println("预期结果" + (if (trueResultList.size > 1) " (以下任意结果均正确) " else "") + ":")
+    var i = 0
+    while (i < trueResultList.size) {
+      println(trueResultList(i))
+      i += 1
+    }
+    print("验证结果: ")
+    if (resultFlag) {
+      println("正确")
+    }
+    else {
+      println("错误")
+    }
   }
 
   /**
@@ -76,8 +126,19 @@ class CallBack {
     * @param inputIndex      需要验证的入参参数序号
     * @param tempList        临时缓存，用于数据传递
     */
-  def inputVerify(inputObjArr: Array[AnyRef], trueInputResult: String, outputObj: Any, inputIndex: Int, tempList: ListBuffer[_]): Boolean = {
-    true
+  def inputVerify(inputObjArr: Array[Any], trueInputResult: String, outputObj: Any, inputIndex: Int, tempList: ListBuffer[_]): Boolean = {
+    try {
+      val inputObj = inputObjArr(inputIndex)
+      val testInputResult = Format.format(inputObj)
+      val resultFlag = trueInputResult == testInputResult
+      printInputVerify(trueInputResult, testInputResult, resultFlag)
+      return resultFlag
+    } catch {
+      case e: Exception =>
+        e.printStackTrace()
+        printInputVerify(trueInputResult, e.getMessage, false)
+        return false
+    }
   }
 
   /**
@@ -88,7 +149,17 @@ class CallBack {
     * @param resultFlag      验证结果
     */
   def printInputVerify(trueInputResult: String, testInputResult: String, resultFlag: Boolean): Unit = {
-
+    println("入参输出:")
+    println(testInputResult)
+    println("入参预期结果:")
+    println(trueInputResult)
+    print("入参验证结果: ")
+    if (resultFlag) {
+      println("正确")
+    }
+    else {
+      println("错误")
+    }
   }
 
   /**
@@ -103,6 +174,8 @@ class CallBack {
     * @return
     */
   def funcListTest(funcList: ListBuffer[_], paramList: ListBuffer[_]): ListBuffer[_] = {
-     null
+    //val retList = Utilitys.funcListTest(getClass, funcList, paramList)
+    //return retList
+    null
   }
 }
