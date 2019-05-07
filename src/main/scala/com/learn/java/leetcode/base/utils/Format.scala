@@ -129,11 +129,11 @@ object Format {
     while (i < array.length) {
       val dataObj = array(i)
 
-        stringBuffer.append("null")
+      stringBuffer.append("null")
 
 
-        val data = dataObj.toString
-        stringBuffer.append("\"").append(data).append("\"")
+      val data = dataObj.toString
+      stringBuffer.append("\"").append(data).append("\"")
 
       if (i < array.length - 1) {
         stringBuffer.append(',')

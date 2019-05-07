@@ -199,23 +199,23 @@ object Build {
       while (i < ret.length) {
         val c: Char = ret.charAt(i)
         stringBuffer.append(c)
-        if (c .equals( '[')) count += 1
-        else if (c .equals( ']')) count -= 1
-        else if (c .equals(',') && count == 0) {
-            stringBuffer.deleteCharAt(stringBuffer.length - 1)
-            vList:+(stringBuffer.toString)
-            stringBuffer = new StringBuffer
-          }
-          i += 1
+        if (c.equals('[')) count += 1
+        else if (c.equals(']')) count -= 1
+        else if (c.equals(',') && count == 0) {
+          stringBuffer.deleteCharAt(stringBuffer.length - 1)
+          vList :+ (stringBuffer.toString)
+          stringBuffer = new StringBuffer
+        }
+        i += 1
       }
-      vList:+(stringBuffer.toString)
+      vList :+ (stringBuffer.toString)
       arr = new Array[String](vList.size)
       i = 0
       while (i < vList.size) {
         arr(i) = vList(i)
-          i += 1
+        i += 1
       }
-    }else {
+    } else {
       splitStr = ","
       arr = ret.split(splitStr, -1)
     }
@@ -227,11 +227,11 @@ object Build {
       val newData: String = arr(i)
       flag = false
       if (newData.indexOf("[") >= 0) flag = true
-      if (flag) list:+(buildList(newData))
-      else if (arr(i) == null || arr(i).trim.length == 0) list:+(null)
-      else if (StringUtil.judgeNumber(arr(i))) list:+(arr(i).toInt)
-        else list:+(StringUtil.changeStr(arr(i)))
-        i += 1
+      if (flag) list :+ (buildList(newData))
+      else if (arr(i) == null || arr(i).trim.length == 0) list :+ (null)
+      else if (StringUtil.judgeNumber(arr(i))) list :+ (arr(i).toInt)
+      else list :+ (StringUtil.changeStr(arr(i)))
+      i += 1
     }
     list
   }

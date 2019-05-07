@@ -76,7 +76,7 @@ class CallBack {
       } else if (parameterName.equals("com.learn.java.leetcode.base.structure.TreeNode")) {
         val treeNode: TreeNode = Build.buildBinaryTree(data)
         inputObjArr(j) = treeNode
-      } else if (parameterName.equals( "java.util.List")) {
+      } else if (parameterName.equals("java.util.List")) {
         val list = Build.buildList(data)
         inputObjArr(j) = list
       }

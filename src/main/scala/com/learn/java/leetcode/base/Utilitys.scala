@@ -9,11 +9,11 @@ import org.apache.commons.lang.StringUtils
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
-import scala.util.control.Breaks
 import scala.reflect.runtime.{universe => ru}
+import scala.util.control.Breaks
 
 object Utilitys {
-  val classMirror = ru.runtimeMirror(getClass.getClassLoader)         //获取运行时类镜像
+  val classMirror = ru.runtimeMirror(getClass.getClassLoader) //获取运行时类镜像
   def test(callBack: CallBack): Boolean = {
     val testList = readTxtFile(callBack)
     //类方法定义
@@ -86,27 +86,27 @@ object Utilitys {
       val algorithmClass = Class.forName(packageName + "." + algorithmClassName)
       val methods = algorithmClass.getMethods
 
-      val classTest = classMirror.staticModule(packageName + "." + algorithmClassName)          //获取需要反射object
-      val methodsTest = classMirror.reflectModule(classTest)                  //构造获取方式的对象
-      val objMirror = classMirror.reflect(methodsTest.instance)               //反射结果赋予对象
-      val methodTest = methodsTest.symbol.typeSignature.member(ru.TermName(algorithmFuncName)).asMethod  //反射调用函数
+      val classTest = classMirror.staticModule(packageName + "." + algorithmClassName) //获取需要反射object
+      val methodsTest = classMirror.reflectModule(classTest) //构造获取方式的对象
+      val objMirror = classMirror.reflect(methodsTest.instance) //反射结果赋予对象
+      val methodTest = methodsTest.symbol.typeSignature.member(ru.TermName(algorithmFuncName)).asMethod //反射调用函数
 
-      var i:Int = 0
-      while (i < methods.size ){
-        val method:Method = methods(i)
+      var i: Int = 0
+      while (i < methods.size) {
+        val method: Method = methods(i)
         var parameterTypes: Array[Class[_]] = null
-        if (algorithmFuncName .equals(method.getName)) {
+        if (algorithmFuncName.equals(method.getName)) {
           var invokeFlag = true
           // 得到方法的返回值类型的类型
           val returnType = methods(i).getReturnType
           val returnTypeName = returnType.getName
 
-           parameterTypes = methods(i).getParameterTypes
+          parameterTypes = methods(i).getParameterTypes
           val paramLength = parameterTypes.length
           val inputObjArr = new Array[Any](paramLength)
 
           //临时集合，用于输入和输出之间传递
-          val tempList:ListBuffer[_] = new ListBuffer()
+          val tempList: ListBuffer[_] = new ListBuffer()
 
           println("输入:")
           //打印输入参数
@@ -130,27 +130,26 @@ object Utilitys {
           }
 
 
-
           val startTime = System.currentTimeMillis
           //调用算法
-          var outputObj:Any = null
+          var outputObj: Any = null
           try
-              if (invokeFlag){
+              if (invokeFlag) {
                 //val m: Method = algorithmClass.getDeclaredMethod(algorithmFuncName,classOf[Array[Int]],classOf[Int])
                 //val o =algorithmClass.newInstance
                 //outputObj = method.invoke(o, inputObjArr(0),inputObjArr(1))
-                if(inputObjArr.length==0){
+                if (inputObjArr.length == 0) {
                   outputObj = objMirror.reflectMethod(methodTest)()
-                }else if(inputObjArr.length==1){
+                } else if (inputObjArr.length == 1) {
                   outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0))
-                }else if(inputObjArr.length==2){
-                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0),inputObjArr(1))
-                }else if(inputObjArr.length==3){
-                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0),inputObjArr(1),inputObjArr(2))
-                }else if(inputObjArr.length==4){
-                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0),inputObjArr(1),inputObjArr(2),inputObjArr(3))
-                }else if(inputObjArr.length==5){
-                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0),inputObjArr(1),inputObjArr(2),inputObjArr(3),inputObjArr(4))
+                } else if (inputObjArr.length == 2) {
+                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0), inputObjArr(1))
+                } else if (inputObjArr.length == 3) {
+                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0), inputObjArr(1), inputObjArr(2))
+                } else if (inputObjArr.length == 4) {
+                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0), inputObjArr(1), inputObjArr(2), inputObjArr(3))
+                } else if (inputObjArr.length == 5) {
+                  outputObj = objMirror.reflectMethod(methodTest)(inputObjArr(0), inputObjArr(1), inputObjArr(2), inputObjArr(3), inputObjArr(4))
                 }
 
               }
@@ -162,7 +161,7 @@ object Utilitys {
           val endTime = System.currentTimeMillis
 
           //格式化打印
-          if (!("Unit".equals( returnTypeName))) { //打印输出
+          if (!("Unit".equals(returnTypeName))) { //打印输出
             try
               callBack.printOutput(outputObj)
             catch {
@@ -178,7 +177,7 @@ object Utilitys {
             var trueResult: String = dataList(k)
             if (StringUtils.isNotBlank(trueResult)) if (trueResult.startsWith("=")) {
               trueResult = trueResult.substring(1)
-              if (StringUtils.isNotBlank(trueResult)) trueResultOutputList+=(trueResult)
+              if (StringUtils.isNotBlank(trueResult)) trueResultOutputList += (trueResult)
             }
             else if (StringUtil.judgeINumber(trueResult)) {
               /**
@@ -196,7 +195,7 @@ object Utilitys {
                   callBack.printInputVerify(trueInputResult, e.getMessage, false)
               }
             }
-              k += 1
+            k += 1
           }
 
           if (trueResultOutputList.size > 0) {
@@ -217,7 +216,7 @@ object Utilitys {
           println("计算时长: " + (endTime - startTime) + "ms")
 
         }
-        i+=1
+        i += 1
       }
 
     } catch {

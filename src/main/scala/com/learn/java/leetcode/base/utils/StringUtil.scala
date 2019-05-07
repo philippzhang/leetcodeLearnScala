@@ -36,8 +36,8 @@ object StringUtil {
     * @return
     */
   def changeStr(temp: String): String = {
-    if (temp == null || temp .equals( "null")) return null
-    var ret:String = temp
+    if (temp == null || temp.equals("null")) return null
+    var ret: String = temp
     if (ret.startsWith("\"")) {
       ret = ret.substring(1)
     }
