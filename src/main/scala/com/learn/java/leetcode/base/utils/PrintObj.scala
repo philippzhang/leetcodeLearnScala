@@ -1,6 +1,9 @@
 package com.learn.java.leetcode.base.utils
 
-import com.learn.java.leetcode.base.structure.ListNode
+
+import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
+
+import scala.collection.mutable.Stack
 
 object PrintObj {
   def printObj(obj: Any): Unit = {
@@ -22,7 +25,7 @@ object PrintObj {
         printObj(obj.asInstanceOf[Array[Array[Int]]])
       } else if (className.equals("[C")) {
         printObj(obj.asInstanceOf[Array[Char]])
-      } else if (className.equals("[Lcom.learn.java.leetcode.base.structure.ListNode;")){
+      } else if (className.equals("[Lcom.learn.java.leetcode.base.structure.ListNode;")) {
         printObj(obj.asInstanceOf[Array[ListNode]])
       } else {
         printObj(obj.asInstanceOf[Array[Any]])
@@ -78,6 +81,9 @@ object PrintObj {
         print(ext)
       }
       println()
+    }
+    if (obj.isInstanceOf[TreeNode]) {
+      printObj(obj.asInstanceOf[TreeNode])
     }
   }
 
@@ -158,7 +164,7 @@ object PrintObj {
         printObj(array(i), ",")
       }
       else printObj(array(i))
-        i += 1
+      i += 1
     }
     print("]")
     println()
@@ -189,5 +195,86 @@ object PrintObj {
     }
     print("]")
     println()
+  }
+
+
+  /**
+    * 竖向打印二叉树
+    *
+    * @param root 二叉树根节点
+    */
+  def printObj(root: TreeNode): Unit = {
+    if (root == null) return
+    val globalStack: Stack[TreeNode] = Stack()
+    globalStack.push(root)
+    val depth: Int = getDepth(root)
+    var nBlank: Int = Math.pow(2, depth + 1).toInt
+    val ndot: Int = nBlank * 2
+    var isRowEmpty: Boolean = false
+    var i: Int = 0
+    while (i < ndot) {
+      print('.')
+      i += 1
+    }
+    println()
+    while (!isRowEmpty) {
+      val localStack: Stack[TreeNode] = Stack()
+      isRowEmpty = true
+      var j: Int = 0
+      while (j < nBlank) {
+        print(' ')
+        j += 1
+      }
+      while (!globalStack.isEmpty) { //里面的while循环用于查看全局的栈是否为空
+        val temp: TreeNode = globalStack.pop
+        if (temp != null) {
+          print(temp.value)
+          System.out.print(' ')
+          localStack.push(temp.left)
+          localStack.push(temp.right)
+          //如果当前的节点下面还有子节点，则必须要进行下一层的循环
+          if (temp.left != null || temp.right != null) isRowEmpty = false
+        }
+        else { //如果全局的栈则不为空
+          print("# ")
+          localStack.push(null)
+          localStack.push(null)
+        }
+        //打印一些空格
+        var j: Int = 0
+        while (j < nBlank * 2 - 2) {
+          print(' ')
+          j += 1
+        }
+      } //while end}
+      println()
+      nBlank /= 2
+      //这个while循环用来判断，local栈是否为空,不为空的话，则取出来放入全局栈中
+      while (!localStack.isEmpty) {
+        globalStack.push(localStack.pop)
+      }
+    } //大while循环结束之后，输出换行}
+    i = 0
+    while (i < ndot) {
+      print('.')
+      i += 1
+    }
+    println()
+  }
+
+  /**
+    * 二叉树的高度
+    *
+    * @param root
+    * @return
+    */
+  private def getDepth(root: TreeNode): Int = {
+    if (root != null) {
+      val lDepth = getDepth(root.left)
+      val rDepth = getDepth(root.right)
+      (if (lDepth > rDepth) lDepth else rDepth) + 1
+    } else {
+      return 0
+    }
   }
 }

@@ -1,6 +1,9 @@
 package com.learn.java.leetcode.base.utils
 
-import com.learn.java.leetcode.base.structure.ListNode
+import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
+
+import scala.collection.mutable.{Queue, Stack}
+import scala.util.control.Breaks
 
 object Format {
   /**
@@ -33,7 +36,7 @@ object Format {
         format(obj.asInstanceOf[Array[Array[Int]]], stringBuffer);
       } else if (className.equals("[C")) {
         format(obj.asInstanceOf[Array[Char]], stringBuffer);
-      } else if (className .equals("[Lcom.learn.java.leetcode.base.structure.ListNode;")) {
+      } else if (className.equals("[Lcom.learn.java.leetcode.base.structure.ListNode;")) {
         format(obj.asInstanceOf[Array[ListNode]], stringBuffer)
       } else {
         format(obj.asInstanceOf[Array[Any]], stringBuffer)
@@ -58,18 +61,20 @@ object Format {
         if (i < results.size - 1) {
           stringBuffer.append(',')
         }
-          i += 1
+        i += 1
       }
       stringBuffer.append("]")
-    }else if (obj.isInstanceOf[ListNode]) {
-      val listNode:ListNode = obj.asInstanceOf[ListNode];
-      stringBuffer.append("[" + String.valueOf(listNode.x) )
-      var p:ListNode = listNode.next;
+    } else if (obj.isInstanceOf[ListNode]) {
+      val listNode: ListNode = obj.asInstanceOf[ListNode];
+      stringBuffer.append("[" + String.valueOf(listNode.x))
+      var p: ListNode = listNode.next;
       while (p != null) {
-        stringBuffer.append(",").append(String.valueOf(p.x) )
+        stringBuffer.append(",").append(String.valueOf(p.x))
         p = p.next
       }
       stringBuffer.append("]")
+    } else if (obj.isInstanceOf[TreeNode]) {
+      format(obj.asInstanceOf[TreeNode], stringBuffer)
     }
   }
 
@@ -83,11 +88,10 @@ object Format {
     var i = 0
     while (i < array.length) {
       val dataObj = array(i)
-      if (dataObj == null) stringBuffer.append("null")
-      else {
-        val data = dataObj.toString
-        stringBuffer.append(data)
-      }
+
+      val data = dataObj.toString
+      stringBuffer.append(data)
+
       if (i < array.length - 1) stringBuffer.append(',')
       i += 1;
     }
@@ -124,13 +128,13 @@ object Format {
     var i = 0
     while (i < array.length) {
       val dataObj = array(i)
-      if (dataObj == null) {
+
         stringBuffer.append("null")
-      }
-      else {
+
+
         val data = dataObj.toString
         stringBuffer.append("\"").append(data).append("\"")
-      }
+
       if (i < array.length - 1) {
         stringBuffer.append(',')
       }
@@ -151,7 +155,7 @@ object Format {
       if (i < array.length - 1) {
         stringBuffer.append(',')
       }
-        i += 1
+      i += 1
     }
     stringBuffer.append("]")
   }
@@ -179,6 +183,53 @@ object Format {
       i += 1
     }
     stringBuffer.append("]")
+  }
+
+  private def format(treeNode: TreeNode, stringBuffer: StringBuffer): Unit = {
+    if (treeNode == null) {
+      stringBuffer.append("null")
+      return
+    }
+    stringBuffer.append("[")
+    stringBuffer.append(levelOrderFormat(treeNode))
+    stringBuffer.append("]")
+  }
+
+  private def levelOrderFormat(root: TreeNode): String = {
+    var current: TreeNode = root
+    val stringBuffer: StringBuffer = new StringBuffer
+    if (current != null) {
+      val queue: Queue[TreeNode] = Queue()
+      val stack: Stack[TreeNode] = Stack()
+      queue.enqueue(current)
+      while (!queue.isEmpty) {
+        current = queue.dequeue()
+        if (current != null) {
+          stack.push(current)
+          if (current.left != null) queue.enqueue(current.left)
+          else queue.enqueue(null)
+          if (current.right != null) queue.enqueue(current.right)
+          else queue.enqueue(null)
+        }
+        else stack.push(null)
+      }
+      val loop = Breaks
+      loop.breakable {
+        while (!stack.isEmpty) {
+          if (stack.top == null) stack.pop
+          else {
+            loop.break
+          }
+        }
+      }
+      while (!stack.isEmpty) {
+        val treeNode: TreeNode = stack.pop
+        val item: String = if (treeNode != null) treeNode.value + "," else "null,"
+        stringBuffer.insert(0, item)
+      }
+      if (stringBuffer.length > 0) stringBuffer.deleteCharAt(stringBuffer.length - 1)
+    }
+    stringBuffer.toString
   }
 
 }
