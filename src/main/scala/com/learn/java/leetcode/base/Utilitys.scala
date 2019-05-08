@@ -387,8 +387,7 @@ object Utilitys {
                   var flag = true
                   val inputObjArr = new Array[Any](params.size)
                   var k: Int = 0
-                  val loop = Breaks
-                  loop.breakable {
+
                     while (k < params.size) {
                       val parameterName: String = c.getParameterTypes()(k).getName
                       val data = params(k)
@@ -439,14 +438,24 @@ object Utilitys {
                       }
                       else { //可能有未处理的类型
                         flag = false
-                        loop.break
+
                       }
                       k += 1
-                    }
+
                   }
                   if (flag) {
-                    obj = c.newInstance(inputObjArr)
-                    loop.break
+                    if(inputObjArr.length==1){
+                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object])
+                    }else if(inputObjArr.length==2){
+                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object])
+                    }else if(inputObjArr.length==3){
+                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object],inputObjArr(2).asInstanceOf[Object])
+                    }else if(inputObjArr.length==4){
+                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object],inputObjArr(2).asInstanceOf[Object],inputObjArr(3).asInstanceOf[Object])
+                    }else if(inputObjArr.length==5){
+                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object],inputObjArr(2).asInstanceOf[Object],inputObjArr(3).asInstanceOf[Object],inputObjArr(4).asInstanceOf[Object])
+                    }
+
                   }
                 }
               }
