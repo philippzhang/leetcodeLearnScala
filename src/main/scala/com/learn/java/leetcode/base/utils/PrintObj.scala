@@ -3,7 +3,7 @@ package com.learn.java.leetcode.base.utils
 
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
 
-import scala.collection.mutable.Stack
+import scala.collection.mutable.{ListBuffer, Stack}
 
 object PrintObj {
   def printObj(obj: Any): Unit = {
@@ -15,7 +15,7 @@ object PrintObj {
       println("null")
       return
     }
-    if (obj.isInstanceOf[Integer] || obj.isInstanceOf[String] || obj.isInstanceOf[Long] || obj.isInstanceOf[Double] || obj.isInstanceOf[Float] || obj.isInstanceOf[Boolean]) {
+    if (obj.isInstanceOf[Int] || obj.isInstanceOf[String] || obj.isInstanceOf[Long] || obj.isInstanceOf[Double] || obj.isInstanceOf[Float] || obj.isInstanceOf[Boolean]) {
       println(obj)
     } else if (obj.getClass.isArray) {
       val className = obj.getClass.getName
@@ -42,7 +42,7 @@ object PrintObj {
             print(',')
           }
         }
-        if (item.isInstanceOf[Integer] || item.isInstanceOf[String] || item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
+        if (item.isInstanceOf[Int] || item.isInstanceOf[String] || item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
           print(item)
           if (i < results.size - 1) {
             print(',')
@@ -50,6 +50,44 @@ object PrintObj {
         }
         else {
           if (item.isInstanceOf[List[_]]) {
+            if (i == 0) {
+              println()
+            }
+            if (i < results.size - 1) {
+              printObj(item, ",")
+            }
+            else {
+              printObj(item, null)
+            }
+          }
+        }
+        i += 1
+      }
+      print("]")
+      if (ext != null) {
+        print(ext)
+      }
+      println()
+    }else if (obj.isInstanceOf[ListBuffer[_]]) {
+      val results: ListBuffer[_] = obj.asInstanceOf[ListBuffer[_]]
+      print("[")
+      var i: Int = 0
+      while (i < results.size) {
+        val item: Any = results(i)
+        if (item == null) {
+          print("null")
+          if (i < results.size - 1) {
+            print(',')
+          }
+        }
+        if (item.isInstanceOf[Int] || item.isInstanceOf[String] || item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
+          print(item)
+          if (i < results.size - 1) {
+            print(',')
+          }
+        }
+        else {
+          if (item.isInstanceOf[ListBuffer[_]]) {
             if (i == 0) {
               println()
             }

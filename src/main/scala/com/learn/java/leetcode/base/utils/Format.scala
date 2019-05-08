@@ -2,7 +2,7 @@ package com.learn.java.leetcode.base.utils
 
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
 
-import scala.collection.mutable.{Queue, Stack}
+import scala.collection.mutable.{ListBuffer, Queue, Stack}
 import scala.util.control.Breaks
 
 object Format {
@@ -23,7 +23,7 @@ object Format {
     if (obj == null) {
       stringBuffer.append("null")
       return
-    } else if (obj.isInstanceOf[Integer] || obj.isInstanceOf[Long] || obj.isInstanceOf[Double] || obj.isInstanceOf[Float] || obj.isInstanceOf[Boolean]) {
+    } else if (obj.isInstanceOf[Int] || obj.isInstanceOf[Long] || obj.isInstanceOf[Double] || obj.isInstanceOf[Float] || obj.isInstanceOf[Boolean]) {
       stringBuffer.append(obj.toString)
     }
     else if (obj.isInstanceOf[String]) {
@@ -50,7 +50,7 @@ object Format {
         if (item == null) {
           stringBuffer.append("null")
         }
-        if (item.isInstanceOf[Integer] || item.isInstanceOf[String] || item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
+        if (item.isInstanceOf[Int] || item.isInstanceOf[String] || item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
           stringBuffer.append(item)
         }
         else {
@@ -64,7 +64,30 @@ object Format {
         i += 1
       }
       stringBuffer.append("]")
-    } else if (obj.isInstanceOf[ListNode]) {
+    } else if (obj.isInstanceOf[ListBuffer[_]]) {
+      val results: ListBuffer[_] = obj.asInstanceOf[ListBuffer[_]]
+      stringBuffer.append("[")
+      var i: Int = 0
+      while (i < results.size) {
+        val item: Any = results(i)
+        if (item == null) {
+          stringBuffer.append("null")
+        }
+        if (item.isInstanceOf[Int] || item.isInstanceOf[String] || item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
+          stringBuffer.append(item)
+        }
+        else {
+          if (item.isInstanceOf[ListBuffer[_]]) {
+            format(item, stringBuffer)
+          }
+        }
+        if (i < results.size - 1) {
+          stringBuffer.append(',')
+        }
+        i += 1
+      }
+      stringBuffer.append("]")
+  } else if (obj.isInstanceOf[ListNode]) {
       val listNode: ListNode = obj.asInstanceOf[ListNode];
       stringBuffer.append("[" + String.valueOf(listNode.x))
       var p: ListNode = listNode.next;

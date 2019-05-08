@@ -3,7 +3,7 @@ package com.learn.java.leetcode.base.utils
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
 
 import scala.Array._
-import scala.collection.mutable.Queue
+import scala.collection.mutable.{ListBuffer, Queue}
 
 object Build {
   /**
@@ -28,6 +28,17 @@ object Build {
     results
   }
 
+  def buildArray(list: ListBuffer[_]): Array[Int] = {
+    if (list == null || list.size == 0) return null
+    val results = new Array[Int](list.size)
+    var i = 0
+    while (i < list.size) {
+      results(i) = list(i).toString.toInt
+        i += 1
+    }
+    results
+  }
+
 
   /**
     * 构建字符数组
@@ -46,6 +57,17 @@ object Build {
     while (i < length) {
       results(i) = StringUtil.changeStr(arr(i)).charAt(0)
       i += 1
+    }
+    results
+  }
+
+  def buildArrayChar(list: ListBuffer[_]): Array[Char] = {
+    if (list == null || list.size == 0) return null
+    val results = new Array[Char](list.size)
+    var i = 0
+    while (i < list.size) {
+      results(i) = StringUtil.changeStr(list(i).toString).charAt(0)
+        i += 1
     }
     results
   }
@@ -100,6 +122,17 @@ object Build {
     results
   }
 
+  def buildArrayString(list: ListBuffer[_]): Array[String] = {
+    if (list == null || list.size == 0) return null
+    val results = new Array[String](list.size)
+    var i = 0
+    while (i < list.size) {
+      results(i) = StringUtil.changeStr(list(i).toString)
+        i += 1
+    }
+    results
+  }
+
   /**
     * 构建链表
     *
@@ -113,12 +146,26 @@ object Build {
     val split = ret.split(",", -1)
     val len = split.length
     val listNode = new Array[ListNode](len + 1)
-    listNode(0) = new ListNode(Integer.valueOf(split(0)))
+    listNode(0) = new ListNode(split(0).toInt)
     var i = 1
     while (i < len) {
-      listNode(i) = new ListNode(Integer.valueOf(split(i)))
+      listNode(i) = new ListNode(split(i).toInt)
       listNode(i - 1).next = listNode(i)
       i += 1
+    }
+    listNode(0)
+  }
+
+  def buildListNode(list: ListBuffer[_]): ListNode = {
+    if (list == null || list.size == 0) return null
+    val len = list.size
+    val listNode = new Array[ListNode](len + 1)
+    listNode(0) = new ListNode(list(0).toString.toInt)
+    var i:Int = 1
+    while (i < len) {
+      listNode(i) = new ListNode(list(i).toString.toInt)
+      listNode(i - 1).next = listNode(i)
+        i += 1
     }
     listNode(0)
   }
@@ -145,6 +192,19 @@ object Build {
     results
   }
 
+  def buildListNodeArray(list: ListBuffer[_]): Array[ListNode] = {
+    if (list == null || list.size == 0) return null
+    val row = list.size
+    val results = new Array[ListNode](row)
+    var i:Int = 0
+    while (i < row) {
+      val listNode = buildListNode(list(i).asInstanceOf[ListBuffer[_]])
+      results(i) = listNode
+        i += 1
+    }
+    results
+  }
+
   /**
     * 构建树
     *
@@ -154,20 +214,44 @@ object Build {
   def buildBinaryTree(data: String): TreeNode = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.equals("[]")) return null
     var ret = data.replaceAll(" ", "")
-    val s1: String = ret.substring(1, ret.length - 1)
-    val partTree: Array[String] = s1.split(",", -1)
-    val root: TreeNode = new TreeNode(partTree(0).toInt)
-    val queue: Queue[TreeNode] = new Queue[TreeNode]
+    val s1 = ret.substring(1, ret.length - 1)
+    val partTree = s1.split(",", -1)
+    val root = new TreeNode(partTree(0).toInt)
+    val queue = new Queue[TreeNode]
     queue.enqueue(root)
-    var i: Int = 1
+    var i = 1
     while (!queue.isEmpty && i < partTree.length) {
-      val node: TreeNode = queue.dequeue()
+      val node = queue.dequeue()
       if (i < partTree.length && partTree(i) != null && !(partTree(i).equals("null"))) {
         node.left = new TreeNode(partTree(i).toInt)
         queue.enqueue(node.left)
       }
       if (i + 1 < partTree.length && partTree(i + 1) != null && !(partTree(i + 1).equals("null"))) {
         node.right = new TreeNode(partTree(i + 1).toInt)
+        queue.enqueue(node.right)
+      }
+      i += 2
+    }
+    queue.clear()
+    root
+  }
+
+  def buildBinaryTree(list: ListBuffer[_]): TreeNode = {
+    if (list == null || list.size == 0) return null
+    val root: TreeNode = new TreeNode(list(0).toString.toInt)
+    val queue: Queue[TreeNode] = new Queue[TreeNode]
+    queue.enqueue(root)
+    var i: Int = 1
+    while ( {
+      !queue.isEmpty && i < list.size
+    }) {
+      val node: TreeNode = queue.dequeue()
+      if (i < list.size && (list(i) != null) && !(list(i).toString .equals( "null"))) {
+        node.left = new TreeNode(list(i).toString.toInt)
+        queue.enqueue(node.left)
+      }
+      if (i + 1 < list.size && list(i + 1) != null && !(list(i + 1).toString .equals( "null"))) {
+        node.right = new TreeNode(list(i + 1).toString.toInt)
         queue.enqueue(node.right)
       }
       i += 2
@@ -183,16 +267,16 @@ object Build {
     * @param data
     * @return
     */
-  def buildList(data: String): List[_] = {
+  def buildList(data: String): ListBuffer[Any] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
-    if (data.equals("[]")) return List()
+    if (data.equals("[]")) return ListBuffer()
     var ret = data.trim
     //去掉最外层的[]
     ret = ret.substring(1, ret.length - 1)
     var splitStr: String = null
     var arr: Array[String] = null
     if (ret.indexOf("[") >= 0) {
-      val vList: List[String] = List()
+      val vList: ListBuffer[String] = ListBuffer()
       var count: Int = 0
       var stringBuffer: StringBuffer = new StringBuffer
       var i: Int = 0
@@ -203,12 +287,12 @@ object Build {
         else if (c.equals(']')) count -= 1
         else if (c.equals(',') && count == 0) {
           stringBuffer.deleteCharAt(stringBuffer.length - 1)
-          vList :+ (stringBuffer.toString)
+          vList += (stringBuffer.toString)
           stringBuffer = new StringBuffer
         }
         i += 1
       }
-      vList :+ (stringBuffer.toString)
+      vList += (stringBuffer.toString)
       arr = new Array[String](vList.size)
       i = 0
       while (i < vList.size) {
@@ -221,16 +305,16 @@ object Build {
     }
     var flag: Boolean = false
     val length: Int = arr.length
-    val list: List[_] = List()
+    val list: ListBuffer[Any] = ListBuffer()
     var i: Int = 0
     while (i < length) {
       val newData: String = arr(i)
       flag = false
       if (newData.indexOf("[") >= 0) flag = true
-      if (flag) list :+ (buildList(newData))
-      else if (arr(i) == null || arr(i).trim.length == 0) list :+ (null)
-      else if (StringUtil.judgeNumber(arr(i))) list :+ (arr(i).toInt)
-      else list :+ (StringUtil.changeStr(arr(i)))
+      if (flag) list += (buildList(newData))
+      else if (arr(i) == null || arr(i).trim.length == 0) list += (null)
+      else if (StringUtil.judgeNumber(arr(i))) list += (arr(i).toInt)
+      else list += (StringUtil.changeStr(arr(i)))
       i += 1
     }
     list

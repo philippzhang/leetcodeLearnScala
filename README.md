@@ -4,7 +4,7 @@ leetcode刷题项目(scala版)
 1. 本人实现的leetcode算法测试项目
 2. 每个算法通常对应三个文件: 算法主类、算法测试类Main、算法README.md
 3. 算法主类用于实现算法的核心代码
-4. 算法测试类是一个继承CallBack的类Main，包含一个main方法，通常调用Utilitys.test(Main.class);进行测试
+4. 算法测试类是一个继承CallBack的类Main，包含一个main方法，通常调用Utilitys.test(new Main)进行测试
    
    对于部分复杂的算法测试需求，需要覆盖CallBack提供的方法进程实现
    

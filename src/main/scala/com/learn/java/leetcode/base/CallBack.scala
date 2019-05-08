@@ -76,7 +76,10 @@ class CallBack {
       } else if (parameterName.equals("com.learn.java.leetcode.base.structure.TreeNode")) {
         val treeNode: TreeNode = Build.buildBinaryTree(data)
         inputObjArr(j) = treeNode
-      } else if (parameterName.equals("java.util.List")) {
+     /* } else if (parameterName.equals("scala.collection.immutable.List")) {
+        val list = Build.buildList(data)
+        inputObjArr(j) = list*/
+      } else if (parameterName.equals("scala.collection.mutable.ListBuffer")) {
         val list = Build.buildList(data)
         inputObjArr(j) = list
       }
@@ -213,8 +216,7 @@ class CallBack {
     * @return
     */
   def funcListTest(funcList: ListBuffer[_], paramList: ListBuffer[_]): ListBuffer[_] = {
-    //val retList = Utilitys.funcListTest(getClass, funcList, paramList)
-    //return retList
-    null
+    val retList = Utilitys.funcListTest(this, funcList, paramList)
+    return retList
   }
 }
