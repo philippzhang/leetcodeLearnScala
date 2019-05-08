@@ -34,7 +34,7 @@ object Build {
     var i = 0
     while (i < list.size) {
       results(i) = list(i).toString.toInt
-        i += 1
+      i += 1
     }
     results
   }
@@ -67,7 +67,7 @@ object Build {
     var i = 0
     while (i < list.size) {
       results(i) = StringUtil.changeStr(list(i).toString).charAt(0)
-        i += 1
+      i += 1
     }
     results
   }
@@ -128,7 +128,7 @@ object Build {
     var i = 0
     while (i < list.size) {
       results(i) = StringUtil.changeStr(list(i).toString)
-        i += 1
+      i += 1
     }
     results
   }
@@ -161,11 +161,11 @@ object Build {
     val len = list.size
     val listNode = new Array[ListNode](len + 1)
     listNode(0) = new ListNode(list(0).toString.toInt)
-    var i:Int = 1
+    var i: Int = 1
     while (i < len) {
       listNode(i) = new ListNode(list(i).toString.toInt)
       listNode(i - 1).next = listNode(i)
-        i += 1
+      i += 1
     }
     listNode(0)
   }
@@ -196,11 +196,11 @@ object Build {
     if (list == null || list.size == 0) return null
     val row = list.size
     val results = new Array[ListNode](row)
-    var i:Int = 0
+    var i: Int = 0
     while (i < row) {
       val listNode = buildListNode(list(i).asInstanceOf[ListBuffer[_]])
       results(i) = listNode
-        i += 1
+      i += 1
     }
     results
   }
@@ -246,11 +246,11 @@ object Build {
       !queue.isEmpty && i < list.size
     }) {
       val node: TreeNode = queue.dequeue()
-      if (i < list.size && (list(i) != null) && !(list(i).toString .equals( "null"))) {
+      if (i < list.size && (list(i) != null) && !(list(i).toString.equals("null"))) {
         node.left = new TreeNode(list(i).toString.toInt)
         queue.enqueue(node.left)
       }
-      if (i + 1 < list.size && list(i + 1) != null && !(list(i + 1).toString .equals( "null"))) {
+      if (i + 1 < list.size && list(i + 1) != null && !(list(i + 1).toString.equals("null"))) {
         node.right = new TreeNode(list(i + 1).toString.toInt)
         queue.enqueue(node.right)
       }

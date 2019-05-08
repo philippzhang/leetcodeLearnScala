@@ -68,7 +68,7 @@ object PrintObj {
         print(ext)
       }
       println()
-    }else if (obj.isInstanceOf[ListBuffer[_]]) {
+    } else if (obj.isInstanceOf[ListBuffer[_]]) {
       val results: ListBuffer[_] = obj.asInstanceOf[ListBuffer[_]]
       print("[")
       var i: Int = 0

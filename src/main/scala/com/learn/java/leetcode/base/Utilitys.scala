@@ -364,7 +364,7 @@ object Utilitys {
   def funcListTest(callBack: CallBack, funcList: ListBuffer[_], paramList: ListBuffer[_]): ListBuffer[_] = {
     val retList: ListBuffer[Any] = ListBuffer()
     if (funcList != null && funcList.size > 0 && paramList != null && paramList.size > 0) {
-      var obj:Any = null
+      var obj: Any = null
       var algorithmClass: Class[_] = null
       var packageName = callBack.getClass.getPackage().getName()
       var i: Int = 0
@@ -473,11 +473,11 @@ object Utilitys {
               val parameterTypes = method.getParameterTypes
               val paramLength = parameterTypes.length
               val inputObjArr = new Array[Any](paramLength)
-              var j:Int = 0
+              var j: Int = 0
               while (j < paramLength) {
                 val parameterName = parameterTypes(j).getName
                 val data = params(j)
-                if (parameterName .equals( "int")) {
+                if (parameterName.equals("int")) {
                   inputObjArr(j) = data.toString.toInt
                 }
                 else if (parameterName.equals("long")) {
@@ -514,7 +514,7 @@ object Utilitys {
                   val list = Build.buildList(data.toString)
                   inputObjArr(j) = list
                 }
-                else if (parameterName.equals( "com.learn.java.leetcode.base.structure.TreeNode") && data.isInstanceOf[ListBuffer[_]]) {
+                else if (parameterName.equals("com.learn.java.leetcode.base.structure.TreeNode") && data.isInstanceOf[ListBuffer[_]]) {
                   val treeNode = Build.buildBinaryTree(data.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = treeNode
                 }
@@ -526,26 +526,26 @@ object Utilitys {
                   val listNode = Build.buildListNodeArray(data.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = listNode
                 }
-                  j += 1
+                j += 1
               }
               //调用方法
               try {
-                var outputObj:Any = null
-                if(inputObjArr.length==0){
+                var outputObj: Any = null
+                if (inputObjArr.length == 0) {
                   outputObj = method.invoke(obj)
-                }else if(inputObjArr.length==1){
-                  outputObj = method.invoke(obj,inputObjArr(0).asInstanceOf[Object])
-                }else if(inputObjArr.length==2){
-                  outputObj = method.invoke(obj,inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object])
-                }else if(inputObjArr.length==3){
-                  outputObj = method.invoke(obj,inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object],inputObjArr(2).asInstanceOf[Object])
-                }else if(inputObjArr.length==4){
-                  outputObj = method.invoke(obj,inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object],inputObjArr(2).asInstanceOf[Object],inputObjArr(3).asInstanceOf[Object])
-                }else if(inputObjArr.length==5){
-                  outputObj = method.invoke(obj,inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object],inputObjArr(2).asInstanceOf[Object],inputObjArr(3).asInstanceOf[Object],inputObjArr(4).asInstanceOf[Object])
+                } else if (inputObjArr.length == 1) {
+                  outputObj = method.invoke(obj, inputObjArr(0).asInstanceOf[Object])
+                } else if (inputObjArr.length == 2) {
+                  outputObj = method.invoke(obj, inputObjArr(0).asInstanceOf[Object], inputObjArr(1).asInstanceOf[Object])
+                } else if (inputObjArr.length == 3) {
+                  outputObj = method.invoke(obj, inputObjArr(0).asInstanceOf[Object], inputObjArr(1).asInstanceOf[Object], inputObjArr(2).asInstanceOf[Object])
+                } else if (inputObjArr.length == 4) {
+                  outputObj = method.invoke(obj, inputObjArr(0).asInstanceOf[Object], inputObjArr(1).asInstanceOf[Object], inputObjArr(2).asInstanceOf[Object], inputObjArr(3).asInstanceOf[Object])
+                } else if (inputObjArr.length == 5) {
+                  outputObj = method.invoke(obj, inputObjArr(0).asInstanceOf[Object], inputObjArr(1).asInstanceOf[Object], inputObjArr(2).asInstanceOf[Object], inputObjArr(3).asInstanceOf[Object], inputObjArr(4).asInstanceOf[Object])
                 }
 
-                retList +=(outputObj)
+                retList += (outputObj)
               } catch {
                 case e: IllegalAccessException =>
                   e.printStackTrace()
@@ -553,7 +553,7 @@ object Utilitys {
                   e.printStackTrace()
               }
             }
-              k += 1
+            k += 1
           }
         }
         i += 1

@@ -87,7 +87,7 @@ object Format {
         i += 1
       }
       stringBuffer.append("]")
-  } else if (obj.isInstanceOf[ListNode]) {
+    } else if (obj.isInstanceOf[ListNode]) {
       val listNode: ListNode = obj.asInstanceOf[ListNode];
       stringBuffer.append("[" + String.valueOf(listNode.x))
       var p: ListNode = listNode.next;

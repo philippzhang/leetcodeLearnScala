@@ -76,9 +76,9 @@ class CallBack {
       } else if (parameterName.equals("com.learn.java.leetcode.base.structure.TreeNode")) {
         val treeNode: TreeNode = Build.buildBinaryTree(data)
         inputObjArr(j) = treeNode
-     /* } else if (parameterName.equals("scala.collection.immutable.List")) {
-        val list = Build.buildList(data)
-        inputObjArr(j) = list*/
+        /* } else if (parameterName.equals("scala.collection.immutable.List")) {
+           val list = Build.buildList(data)
+           inputObjArr(j) = list*/
       } else if (parameterName.equals("scala.collection.mutable.ListBuffer")) {
         val list = Build.buildList(data)
         inputObjArr(j) = list

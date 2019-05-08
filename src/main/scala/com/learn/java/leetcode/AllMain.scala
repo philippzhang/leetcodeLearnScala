@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 object AllMain {
   def main(args: Array[String]): Unit = {
     val path: String = AllMain.getClass.getResource(".").getFile
-    var packageList:ListBuffer[String] = Utilitys.getAllLCFileName(path)
+    var packageList: ListBuffer[String] = Utilitys.getAllLCFileName(path)
     packageList = packageList.sorted
     var successCount: Int = 0
     var failCount: Int = 0
@@ -25,7 +25,7 @@ object AllMain {
         failCount += 1
         failList += packageName.substring(2)
       }
-        i += 1
+      i += 1
     }
     val endTime: Long = System.currentTimeMillis
     println("总题数:" + packageList.size + ", 正确数:" + successCount + ", 错误数:" + failCount)
