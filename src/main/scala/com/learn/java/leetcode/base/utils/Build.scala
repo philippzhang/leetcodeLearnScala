@@ -261,13 +261,13 @@ object Build {
   }
 
   /**
-    * 字符串构建List
+    * 字符串构建ListBuffer
     * 例如[1,2,3]
     *
     * @param data
     * @return
     */
-  def buildList(data: String): ListBuffer[Any] = {
+  def buildListBuffer(data: String): ListBuffer[Any] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
     if (data.equals("[]")) return ListBuffer()
     var ret = data.trim
@@ -311,10 +311,72 @@ object Build {
       val newData: String = arr(i)
       flag = false
       if (newData.indexOf("[") >= 0) flag = true
-      if (flag) list += (buildList(newData))
+      if (flag) list += (buildListBuffer(newData))
       else if (arr(i) == null || arr(i).trim.length == 0) list += (null)
       else if (StringUtil.judgeNumber(arr(i))) list += (arr(i).toInt)
       else list += (StringUtil.changeStr(arr(i)))
+      i += 1
+    }
+    list
+  }
+
+
+
+  /**
+    * 字符串构建ListBuffer
+    * 例如[1,2,3]
+    *
+    * @param data
+    * @return
+    */
+  def buildList(data: String): List[Any] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    if (data.equals("[]")) return List()
+    var ret = data.trim
+    //去掉最外层的[]
+    ret = ret.substring(1, ret.length - 1)
+    var splitStr: String = null
+    var arr: Array[String] = null
+    if (ret.indexOf("[") >= 0) {
+      val vList: List[String] = List()
+      var count: Int = 0
+      var stringBuffer: StringBuffer = new StringBuffer
+      var i: Int = 0
+      while (i < ret.length) {
+        val c: Char = ret.charAt(i)
+        stringBuffer.append(c)
+        if (c.equals('[')) count += 1
+        else if (c.equals(']')) count -= 1
+        else if (c.equals(',') && count == 0) {
+          stringBuffer.deleteCharAt(stringBuffer.length - 1)
+          vList :+ (stringBuffer.toString)
+          stringBuffer = new StringBuffer
+        }
+        i += 1
+      }
+      vList :+ (stringBuffer.toString)
+      arr = new Array[String](vList.size)
+      i = 0
+      while (i < vList.size) {
+        arr(i) = vList(i)
+        i += 1
+      }
+    } else {
+      splitStr = ","
+      arr = ret.split(splitStr, -1)
+    }
+    var flag: Boolean = false
+    val length: Int = arr.length
+    val list: List[Any] = List()
+    var i: Int = 0
+    while (i < length) {
+      val newData: String = arr(i)
+      flag = false
+      if (newData.indexOf("[") >= 0) flag = true
+      if (flag) list :+ (buildList(newData))
+      else if (arr(i) == null || arr(i).trim.length == 0) list :+ (null)
+      else if (StringUtil.judgeNumber(arr(i))) list :+ (arr(i).toInt)
+      else list :+ (StringUtil.changeStr(arr(i)))
       i += 1
     }
     list

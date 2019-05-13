@@ -3,10 +3,8 @@ package com.learn.java.leetcode.base
 
 import java.io.{File, IOException}
 import java.lang.reflect.{Constructor, InvocationTargetException, Method}
-
 import com.learn.java.leetcode.base.utils.{Build, StringUtil}
 import org.apache.commons.lang.StringUtils
-
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 import scala.util.control.Breaks
@@ -520,7 +518,7 @@ object Utilitys {
                   inputObjArr(j) = array
                 }
                 else if (parameterName.equals("scala.collection.mutable.ListBuffer")) {
-                  val list = Build.buildList(data.toString)
+                  val list = Build.buildListBuffer(data.toString)
                   inputObjArr(j) = list
                 }
                 else if (parameterName.equals("com.learn.java.leetcode.base.structure.TreeNode") && data.isInstanceOf[ListBuffer[_]]) {
@@ -569,5 +567,14 @@ object Utilitys {
       }
     }
     retList
+  }
+
+  def compareListsIgnoreOrder[T](list1: List[T], list2: List[T]): Boolean = {
+    if (list1 == null && list2 == null) return true
+    if (list1 == null || list2 == null) return false
+    if (list1.size != list2.size) return false
+    val set1: Set[T] =  list1.toSet
+    val set2: Set[T] =  list2.toSet
+    set1.equals(set2)
   }
 }

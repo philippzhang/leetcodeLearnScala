@@ -106,6 +106,44 @@ object PrintObj {
         print(ext)
       }
       println()
+    } else if (obj.isInstanceOf[List[_]]) {
+      val results: List[_] = obj.asInstanceOf[List[_]]
+      print("[")
+      var i: Int = 0
+      while (i < results.size) {
+        val item: Any = results(i)
+        if (item == null) {
+          print("null")
+          if (i < results.size - 1) {
+            print(',')
+          }
+        }
+        if (item.isInstanceOf[Int] || item.isInstanceOf[String] || item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
+          print(item)
+          if (i < results.size - 1) {
+            print(',')
+          }
+        }
+        else {
+          if (item.isInstanceOf[List[_]]) {
+            if (i == 0) {
+              println()
+            }
+            if (i < results.size - 1) {
+              printObj(item, ",")
+            }
+            else {
+              printObj(item, null)
+            }
+          }
+        }
+        i += 1
+      }
+      print("]")
+      if (ext != null) {
+        print(ext)
+      }
+      println()
     } else if (obj.isInstanceOf[ListNode]) {
       val listNode: ListNode = obj.asInstanceOf[ListNode]
       val str = new StringBuilder("[" + String.valueOf(listNode.x))

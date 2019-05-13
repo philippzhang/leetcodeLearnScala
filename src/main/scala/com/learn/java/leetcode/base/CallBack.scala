@@ -1,6 +1,5 @@
 package com.learn.java.leetcode.base
 
-
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
 import com.learn.java.leetcode.base.utils.{Build, Format, PrintObj, StringUtil}
 
@@ -76,11 +75,11 @@ class CallBack {
       } else if (parameterName.equals("com.learn.java.leetcode.base.structure.TreeNode")) {
         val treeNode: TreeNode = Build.buildBinaryTree(data)
         inputObjArr(j) = treeNode
-        /* } else if (parameterName.equals("scala.collection.immutable.List")) {
+      } else if (parameterName.equals("scala.collection.immutable.List")) {
            val list = Build.buildList(data)
-           inputObjArr(j) = list*/
+           inputObjArr(j) = list
       } else if (parameterName.equals("scala.collection.mutable.ListBuffer")) {
-        val list = Build.buildList(data)
+        val list = Build.buildListBuffer(data)
         inputObjArr(j) = list
       }
       j += 1
@@ -117,7 +116,25 @@ class CallBack {
         return true
       }
       try {
-        resultFlag = trueResult == testResult
+        if (outputObj != null && outputObj.isInstanceOf[List[_]]) {
+          var disOrder = false
+          var j = inputObjArr.length
+          while (j < dataList.size) {
+            if (dataList(j) .equals( "$disorder")) { //List 无序标志
+              disOrder = true
+            }
+            j += 1
+          }
+          if (disOrder) {
+            val trueResultsList = outputObj.asInstanceOf[List[_]]
+            val testResultsList = Build.buildList(testResult)
+            resultFlag = Utilitys.compareListsIgnoreOrder(trueResultsList, testResultsList)
+          }else {
+            resultFlag = trueResult.equals(testResult)
+          }
+        }else {
+          resultFlag = trueResult.equals(testResult)
+        }
         if (resultFlag) {
           printOutVerify(trueResultList, testResult, resultFlag)
           return true
