@@ -577,4 +577,57 @@ object Utilitys {
     val set2: Set[T] =  list2.toSet
     set1.equals(set2)
   }
+
+
+  def compareArrays(array1: Array[Int], array2: Array[Int]): Boolean = {
+    if (array1 == null && array2 == null) return true
+    if (array1 == null || array2 == null) return false
+    if (array1.length != array2.length) return false
+    var i = 0
+    while (i < array1.length) {
+      if (array1(i) != array2(i)) return false
+        i += 1
+    }
+    true
+  }
+
+  def compareArraysString(array1: Array[String], array2: Array[String]): Boolean = {
+    if (array1 == null && array2 == null) return true
+    if (array1 == null || array2 == null) return false
+    if (array1.length != array2.length) return false
+    var i = 0
+    while (i < array1.length) {
+      if (array1(i) == array2(i)) return false
+        i += 1
+    }
+    true
+  }
+
+  def compareArraysChar(array1: Array[Char], array2: Array[Char]): Boolean = {
+    if (array1 == null && array2 == null) return true
+    if (array1 == null || array2 == null) return false
+    if (array1.length != array2.length) return false
+    var i = 0
+    while (i < array1.length) {
+      if (array1(i) != array2(i)) return false
+        i += 1
+    }
+    true
+  }
+
+  def compareMatrix(m1: Array[Array[Int]], m2: Array[Array[Int]]): Boolean = {
+    if (m1 == null && m2 == null) return true
+    if (m1 == null || m2 == null) return false
+    if (m1.length != m2.length || m1(0).length != m2(0).length) return false
+    var i = 0
+    while (i < m1.length) {
+      var j = 0
+      while (j < m1(i).length) {
+        if (m1(i)(j) != m2(i)(j)) return false
+          j += 1
+      }
+        i += 1
+    }
+    true
+  }
 }
