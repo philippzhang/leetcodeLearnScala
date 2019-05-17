@@ -16,6 +16,9 @@ object Build {
   def buildArray(data: String): Array[Int] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
     var ret = data.trim
+    if (ret.equals("[]")){
+      return new Array[Int](0)
+    }
     ret = ret.replaceAll("\\[", "").replaceAll("\\]", "")
     val arr = ret.split(",", -1)
     val length = arr.length
@@ -49,6 +52,9 @@ object Build {
   def buildArrayChar(data: String): Array[Char] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
     var ret = data.trim
+    if (ret.equals("[]")){
+      return new Array[Char](0)
+    }
     ret = ret.replaceAll("\\[", "").replaceAll("\\]", "")
     val arr = ret.split(",", -1)
     val length = arr.length
@@ -110,6 +116,9 @@ object Build {
   def buildArrayString(data: String): Array[String] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
     var ret = data.trim
+    if (ret.equals("[]")){
+      return new Array[String](0)
+    }
     ret = ret.replaceAll("\\[", "").replaceAll("\\]", "")
     val arr = ret.split(",", -1)
     val length = arr.length
