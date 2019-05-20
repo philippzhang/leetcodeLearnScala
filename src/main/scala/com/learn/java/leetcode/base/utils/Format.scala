@@ -34,8 +34,14 @@ object Format {
         format(obj.asInstanceOf[Array[Int]], stringBuffer)
       } else if (className.equals("[[I")) {
         format(obj.asInstanceOf[Array[Array[Int]]], stringBuffer);
+      } else if (className.equals("[[D")) {
+        format(obj.asInstanceOf[Array[Array[Double]]], stringBuffer);
+      } else if (className.equals("[[F")) {
+        format(obj.asInstanceOf[Array[Array[Float]]], stringBuffer);
       } else if (className.equals("[C")) {
         format(obj.asInstanceOf[Array[Char]], stringBuffer);
+      } else if (className.equals("[Ljava.lang.String;")) {
+        format(obj.asInstanceOf[Array[String]], stringBuffer);
       } else if (className.equals("[Lcom.learn.java.leetcode.base.structure.ListNode;")) {
         format(obj.asInstanceOf[Array[ListNode]], stringBuffer)
       } else {
@@ -169,6 +175,48 @@ object Format {
     stringBuffer.append("]")
   }
 
+  private def format(matrix: Array[Array[Double]], stringBuffer: StringBuffer): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    stringBuffer.append("[")
+    var i = 0
+    while (i < row) {
+      stringBuffer.append("[")
+      var j = 0
+      while (j < cow) {
+        stringBuffer.append(matrix(i)(j))
+        if (j < cow - 1) stringBuffer.append(',')
+        j += 1
+      }
+      stringBuffer.append("]")
+      if (i < row - 1) stringBuffer.append(',')
+      i += 1
+    }
+    stringBuffer.append("]")
+  }
+
+  private def format(matrix: Array[Array[Float]], stringBuffer: StringBuffer): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    stringBuffer.append("[")
+    var i = 0
+    while (i < row) {
+      stringBuffer.append("[")
+      var j = 0
+      while (j < cow) {
+        stringBuffer.append(matrix(i)(j))
+        if (j < cow - 1) stringBuffer.append(',')
+        j += 1
+      }
+      stringBuffer.append("]")
+      if (i < row - 1) stringBuffer.append(',')
+      i += 1
+    }
+    stringBuffer.append("]")
+  }
+
   private def format(array: Array[Char], stringBuffer: StringBuffer): Unit = {
     if (array == null) {
       stringBuffer.append("null")
@@ -184,6 +232,30 @@ object Format {
 
       val data = dataObj.toString
       stringBuffer.append("\"").append(data).append("\"")
+
+      if (i < array.length - 1) {
+        stringBuffer.append(',')
+      }
+      i += 1
+    }
+    stringBuffer.append("]")
+  }
+
+  private def format(array: Array[String], stringBuffer: StringBuffer): Unit = {
+    if (array == null) {
+      stringBuffer.append("null")
+      return
+    }
+    stringBuffer.append("[")
+    var i = 0
+    while (i < array.length) {
+      val dataObj = array(i)
+
+      stringBuffer.append("null")
+
+
+      val data = dataObj.toString
+      stringBuffer.append("\"").append(StringUtil.changeStr(data)).append("\"")
 
       if (i < array.length - 1) {
         stringBuffer.append(',')

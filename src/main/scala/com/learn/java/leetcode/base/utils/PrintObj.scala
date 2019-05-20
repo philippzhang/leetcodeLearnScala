@@ -23,6 +23,12 @@ object PrintObj {
         printObj(obj.asInstanceOf[Array[Int]])
       } else if (className.equals("[[I")) {
         printObj(obj.asInstanceOf[Array[Array[Int]]])
+      } else if (className.equals("[[D")) {
+        printObj(obj.asInstanceOf[Array[Array[Double]]])
+      } else if (className.equals("[[F")) {
+        printObj(obj.asInstanceOf[Array[Array[Float]]])
+      } else if (className.equals("[Ljava.lang.String;")) {
+        printObj(obj.asInstanceOf[Array[String]])
       } else if (className.equals("[C")) {
         printObj(obj.asInstanceOf[Array[Char]])
       } else if (className.equals("[Lcom.learn.java.leetcode.base.structure.ListNode;")) {
@@ -188,7 +194,7 @@ object PrintObj {
     *
     * @param matrix
     */
-  def printObj(matrix: Array[Array[Int]]): Unit = {
+  private def printObj(matrix: Array[Array[Int]]): Unit = {
     if (matrix == null) return
     val row = matrix.length
     val cow = matrix(0).length
@@ -212,7 +218,65 @@ object PrintObj {
     println()
   }
 
-  def printObj(array: Array[Char]): Unit = {
+  /**
+    * 打印矩阵
+    *
+    * @param matrix
+    */
+  private def printObj(matrix: Array[Array[Double]]): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    print("[")
+    var i = 0
+    while (i < row) {
+      if (i == 0) println()
+      print("[")
+      var j = 0
+      while (j < cow) {
+        print(matrix(i)(j))
+        if (j < cow - 1) print(',')
+        j += 1
+      }
+      print("]")
+      if (i < row - 1) print(',')
+      println()
+      i += 1;
+    }
+    print("]")
+    println()
+  }
+
+  /**
+    * 打印矩阵
+    *
+    * @param matrix
+    */
+  private def printObj(matrix: Array[Array[Float]]): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    print("[")
+    var i = 0
+    while (i < row) {
+      if (i == 0) println()
+      print("[")
+      var j = 0
+      while (j < cow) {
+        print(matrix(i)(j))
+        if (j < cow - 1) print(',')
+        j += 1
+      }
+      print("]")
+      if (i < row - 1) print(',')
+      println()
+      i += 1;
+    }
+    print("]")
+    println()
+  }
+
+  private def printObj(array: Array[Char]): Unit = {
     if (array == null) {
       return
     }
@@ -229,7 +293,25 @@ object PrintObj {
     println()
   }
 
-  def printObj(array: Array[ListNode]): Unit = {
+  private def printObj(array: Array[String]): Unit = {
+    if (array == null) {
+      return
+    }
+    print("[")
+    var i = 0
+    while (i < array.length) {
+      val data = array(i)
+      print("\"" + StringUtil.changeStr(data) + "\"")
+      if (i < array.length - 1) {
+        print(',')
+      }
+      i += 1
+    }
+    print("]")
+    println()
+  }
+
+  private def printObj(array: Array[ListNode]): Unit = {
     if (array == null) {
       return
     }
@@ -246,7 +328,7 @@ object PrintObj {
     println()
   }
 
-  def printObj(array: Array[Any]): Unit = {
+  private def printObj(array: Array[Any]): Unit = {
     if (array == null) {
       return
     }
@@ -279,7 +361,7 @@ object PrintObj {
     *
     * @param root 二叉树根节点
     */
-  def printObj(root: TreeNode): Unit = {
+  private def printObj(root: TreeNode): Unit = {
     if (root == null) return
     val globalStack: Stack[TreeNode] = Stack()
     globalStack.push(root)
