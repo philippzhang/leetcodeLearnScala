@@ -129,37 +129,37 @@ class CallBack {
 
         if (outputObj != null && outputObj.isInstanceOf[List[_]]) {
           if (disOrder) {
-            val trueResultsList = outputObj.asInstanceOf[List[_]]
-            val testResultsList = Build.buildList(testResult)
-            resultFlag = Utilitys.compareListsIgnoreOrder(trueResultsList, testResultsList)
+            val testResultsList = outputObj.asInstanceOf[List[_]]
+            val trueResultsNewList = Build.buildList(trueResult)
+            resultFlag = Utilitys.compareListsIgnoreOrder(trueResultsNewList, testResultsList)
           }else {
             resultFlag = trueResult.equals(testResult)
           }
         } else if (outputObj != null && parameterName == "[I") {
           if (disOrder) {
-            val trueResultsArray: Array[Int] = outputObj.asInstanceOf[Array[Int]]
-            val testResultsArray: Array[Int] = Build.buildArray(testResult)
+            val testResultsArray: Array[Int] = outputObj.asInstanceOf[Array[Int]]
+            val trueResultsArray: Array[Int] = Build.buildArray(trueResult)
             resultFlag = Utilitys.compareArrays(trueResultsArray, testResultsArray)
           }
           else resultFlag = trueResult == testResult
         }else if (outputObj != null && parameterName.equals("[Ljava.lang.String;")) {
           if (disOrder) {
-            val trueResultsArray: Array[String] = outputObj.asInstanceOf[Array[String]]
-            val testResultsArray: Array[String] = Build.buildArrayString(testResult)
+            val testResultsArray: Array[String] = outputObj.asInstanceOf[Array[String]]
+            val trueResultsArray: Array[String] = Build.buildArrayString(trueResult)
             resultFlag = Utilitys.compareArraysString(trueResultsArray, testResultsArray)
           } else resultFlag = trueResult.equals(testResult)
         }else if (outputObj != null && parameterName.equals("[C")) {
           if (disOrder) {
-            val trueResultsArray: Array[Char] = outputObj.asInstanceOf[Array[Char]]
-            val testResultsArray: Array[Char] = Build.buildArrayChar(testResult);
+            val testResultsArray: Array[Char] = outputObj.asInstanceOf[Array[Char]]
+            val trueResultsArray: Array[Char] = Build.buildArrayChar(trueResult);
             resultFlag = Utilitys.compareArraysChar(trueResultsArray, testResultsArray);
           } else {
             resultFlag = trueResult.equals(testResult);
           }
         } else if (outputObj != null && parameterName.equals("[[I")) {
           if (disOrder) {
-            val trueResultsMatrix: Array[Array[Int]] = outputObj.asInstanceOf[Array[Array[Int]]];
-            val testResultsMatrix: Array[Array[Int]] = Build.buildMatrix(testResult);
+            val testResultsMatrix: Array[Array[Int]] = outputObj.asInstanceOf[Array[Array[Int]]];
+            val trueResultsMatrix: Array[Array[Int]] = Build.buildMatrix(trueResult);
             resultFlag = Utilitys.compareMatrix(trueResultsMatrix, testResultsMatrix);
           } else {
             resultFlag = trueResult.equals(testResult);
