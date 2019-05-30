@@ -3,8 +3,11 @@ package com.learn.java.leetcode.base
 
 import java.io.{File, IOException}
 import java.lang.reflect.{Constructor, InvocationTargetException, Method}
+import java.util.Collections
+
 import com.learn.java.leetcode.base.utils.{Build, StringUtil}
 import org.apache.commons.lang.StringUtils
+
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 import scala.util.control.Breaks
@@ -573,9 +576,32 @@ object Utilitys {
     if (list1 == null && list2 == null) return true
     if (list1 == null || list2 == null) return false
     if (list1.size != list2.size) return false
+    sortList(list1)
+    sortList(list2)
     val set1: Set[T] =  list1.toSet
     val set2: Set[T] =  list2.toSet
     set1.equals(set2)
+  }
+
+
+  def sortList(list: List[_]): Unit = {
+    if (list != null && list.size > 0) {
+      val o = list(0)
+      if (o.isInstanceOf[List[_]]) {
+        var i = 0
+        while (i < list.size) {
+          val list1 = list(i).asInstanceOf[List[_]]
+          sortList(list1)
+          //list.set(i, list1)
+            i += 1
+        }
+      }
+      else if (o.isInstanceOf[String]) {
+        list.asInstanceOf[List[String]].sortWith(_<_)
+      }else if (o.isInstanceOf[Int]) {
+        list.asInstanceOf[List[Int]].sortWith(_<_)
+      }
+    }
   }
 
 
