@@ -3,9 +3,8 @@ package com.learn.java.leetcode.base
 
 import java.io.{File, IOException}
 import java.lang.reflect.{Constructor, InvocationTargetException, Method}
-import java.util.Collections
 
-import com.learn.java.leetcode.base.utils.{Build, StringUtil}
+import com.learn.java.leetcode.base.utils.{Build, PrintObj, StringUtil}
 import org.apache.commons.lang.StringUtils
 
 import scala.collection.mutable.ListBuffer
@@ -576,32 +575,47 @@ object Utilitys {
     if (list1 == null && list2 == null) return true
     if (list1 == null || list2 == null) return false
     if (list1.size != list2.size) return false
-    sortList(list1)
-    sortList(list2)
-    val set1: Set[T] =  list1.toSet
-    val set2: Set[T] =  list2.toSet
+    val listNew1: List[T] = sortList(list1).asInstanceOf[List[T]]
+    val listNew2: List[T] = sortList(list2).asInstanceOf[List[T]]
+    val set1: Set[T] =  listNew1.toSet
+    val set2: Set[T] =  listNew2.toSet
     set1.equals(set2)
   }
 
 
-  def sortList(list: List[_]): Unit = {
+  /**
+    * 排序List,返回一个新的List
+    * @param list
+    * @return
+    */
+  def sortList(list: List[_]): List[_] = {
     if (list != null && list.size > 0) {
       val o = list(0)
       if (o.isInstanceOf[List[_]]) {
         var i = 0
+        var retList = List[List[_]]();
         while (i < list.size) {
           val list1 = list(i).asInstanceOf[List[_]]
-          sortList(list1)
-          //list.set(i, list1)
+          retList = retList :+ sortList(list1)
             i += 1
         }
+        return retList
       }
       else if (o.isInstanceOf[String]) {
-        list.asInstanceOf[List[String]].sortWith(_<_)
+        return list.asInstanceOf[List[String]].sortWith(_<_)
       }else if (o.isInstanceOf[Int]) {
-        list.asInstanceOf[List[Int]].sortWith(_<_)
+        return list.asInstanceOf[List[Int]].sortWith(_<_)
+      }else if (o.isInstanceOf[Long]) {
+        return list.asInstanceOf[List[Long]].sortWith(_<_)
+      }else if (o.isInstanceOf[Float]) {
+        return list.asInstanceOf[List[Float]].sortWith(_<_)
+      }else if (o.isInstanceOf[Double]) {
+        return list.asInstanceOf[List[Double]].sortWith(_<_)
+      }else if (o.isInstanceOf[Boolean]) {
+        return list.asInstanceOf[List[Boolean]].sortWith(_<_)
       }
     }
+    return null
   }
 
 
@@ -655,5 +669,18 @@ object Utilitys {
         i += 1
     }
     true
+  }
+
+  def main(args: Array[String]): Unit = {
+    var l1 = List(List(1,2),List(3,5,1))
+
+    var l2 = List(List(3,1,5),List(2,1))
+
+    var b = compareListsIgnoreOrder(l1,l2);
+
+    PrintObj.printObj(b);
+
+    PrintObj.printObj(l1==l2);
+
   }
 }
