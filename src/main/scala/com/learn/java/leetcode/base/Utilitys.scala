@@ -4,7 +4,7 @@ package com.learn.java.leetcode.base
 import java.io.{File, IOException}
 import java.lang.reflect.{Constructor, InvocationTargetException, Method}
 
-import com.learn.java.leetcode.base.utils.{Build, PrintObj, StringUtil}
+import com.learn.java.leetcode.base.utils.{Build, NoImplException, PrintObj, StringUtil}
 import org.apache.commons.lang.StringUtils
 
 import scala.collection.mutable.ListBuffer
@@ -26,7 +26,8 @@ object Utilitys {
     if (classList.size <= 1) { //throw new RuntimeException("未定义算法主类和方法!");
       println("未定义算法主类和方法!")
       println("-----------------------------")
-      return false
+      //return false
+      throw new NoImplException("未定义算法主类和方法!")
     }
 
     for (i <- Range(1, classList.size)) {
@@ -341,6 +342,8 @@ object Utilitys {
       val callBack = algorithmClass.newInstance().asInstanceOf[CallBack]
       return test(callBack)
     } catch {
+      case e: NoImplException =>
+        throw e
       case e: ClassNotFoundException =>
         e.printStackTrace()
       case e: IllegalAccessException =>
