@@ -2,6 +2,7 @@ package com.learn.java.leetcode.base.utils
 
 
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
+import com.learn.java.leetcode.base.utils.PrintObj.printObj
 
 import scala.collection.mutable.{ListBuffer, Stack}
 
@@ -23,8 +24,12 @@ object PrintObj {
         printObj(obj.asInstanceOf[Array[Int]])
       } else if (className.equals("[[I")) {
         printObj(obj.asInstanceOf[Array[Array[Int]]])
+      } else if (className.equals("[D")) {
+          printObj(obj.asInstanceOf[Array[Double]])
       } else if (className.equals("[[D")) {
         printObj(obj.asInstanceOf[Array[Array[Double]]])
+      } else if (className.equals("[F")) {
+        printObj(obj.asInstanceOf[Array[Float]])
       } else if (className.equals("[[F")) {
         printObj(obj.asInstanceOf[Array[Array[Float]]])
       } else if (className.equals("[C")) {
@@ -180,6 +185,46 @@ object PrintObj {
     * @param array
     */
   private def printObj(array: Array[Int]): Unit = {
+    if (array == null) return
+    print("[")
+    var i = 0
+    while (i < array.length) {
+      print(array(i))
+      if (i < array.length - 1) {
+        print(',')
+      }
+      i += 1
+    }
+    print("]")
+    println()
+  }
+
+  /**
+    * 打印数组
+    *
+    * @param array
+    */
+  private def printObj(array: Array[Double]): Unit = {
+    if (array == null) return
+    print("[")
+    var i = 0
+    while (i < array.length) {
+      print(array(i))
+      if (i < array.length - 1) {
+        print(',')
+      }
+      i += 1
+    }
+    print("]")
+    println()
+  }
+
+  /**
+    * 打印数组
+    *
+    * @param array
+    */
+  private def printObj(array: Array[Float]): Unit = {
     if (array == null) return
     print("[")
     var i = 0

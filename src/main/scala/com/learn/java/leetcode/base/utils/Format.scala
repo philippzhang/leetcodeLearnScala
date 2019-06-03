@@ -1,6 +1,8 @@
 package com.learn.java.leetcode.base.utils
 
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
+import com.learn.java.leetcode.base.utils.Format.format
+
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 import scala.util.control.Breaks
 
@@ -33,8 +35,12 @@ object Format {
         format(obj.asInstanceOf[Array[Int]], stringBuffer)
       } else if (className.equals("[[I")) {
         format(obj.asInstanceOf[Array[Array[Int]]], stringBuffer);
+      } else if (className.equals("[D")) {
+          format(obj.asInstanceOf[Array[Double]], stringBuffer)
       } else if (className.equals("[[D")) {
         format(obj.asInstanceOf[Array[Array[Double]]], stringBuffer);
+      } else if (className.equals("[F")) {
+        format(obj.asInstanceOf[Array[Float]], stringBuffer)
       } else if (className.equals("[[F")) {
         format(obj.asInstanceOf[Array[Array[Float]]], stringBuffer);
       } else if (className.equals("[C")) {
@@ -142,6 +148,45 @@ object Format {
 
 
   private def format(array: Array[Int], stringBuffer: StringBuffer): Unit = {
+    if (array == null) {
+      stringBuffer.append("null")
+      return
+    }
+    stringBuffer.append("[")
+    var i = 0
+    while (i < array.length) {
+      val dataObj = array(i)
+
+      val data = dataObj.toString
+      stringBuffer.append(data)
+
+      if (i < array.length - 1) stringBuffer.append(',')
+      i += 1;
+    }
+    stringBuffer.append("]")
+  }
+
+  private def format(array: Array[Double], stringBuffer: StringBuffer): Unit = {
+    if (array == null) {
+      stringBuffer.append("null")
+      return
+    }
+    stringBuffer.append("[")
+    var i = 0
+    while (i < array.length) {
+      val dataObj = array(i)
+
+      val data = dataObj.toString
+      stringBuffer.append(data)
+
+      if (i < array.length - 1) stringBuffer.append(',')
+      i += 1;
+    }
+    stringBuffer.append("]")
+  }
+
+
+  private def format(array: Array[Float], stringBuffer: StringBuffer): Unit = {
     if (array == null) {
       stringBuffer.append("null")
       return
