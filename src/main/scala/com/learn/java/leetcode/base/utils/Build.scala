@@ -25,7 +25,7 @@ object Build {
     val results = new Array[Int](length)
     var i = 0
     while (i < length) {
-      results(i) = arr(i).toInt
+      results(i) = arr(i).trim.toInt
       i += 1
     }
     results
@@ -55,7 +55,7 @@ object Build {
     val results = new Array[Boolean](length)
     var i = 0
     while (i < length) {
-      results(i) = arr(i).toBoolean
+      results(i) = arr(i).trim.toBoolean
       i += 1
     }
     results
@@ -73,7 +73,7 @@ object Build {
     val results = new Array[Double](length)
     var i = 0
     while (i < length) {
-      results(i) = arr(i).toDouble
+      results(i) = arr(i).trim.toDouble
       i += 1
     }
     results
@@ -91,7 +91,7 @@ object Build {
     val results = new Array[Float](length)
     var i = 0
     while (i < length) {
-      results(i) = arr(i).toFloat
+      results(i) = arr(i).trim.toFloat
       i += 1
     }
     results
