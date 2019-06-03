@@ -1,8 +1,6 @@
 package com.learn.java.leetcode.base.utils
 
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
-import com.learn.java.leetcode.base.utils.Format.format
-
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 import scala.util.control.Breaks
 
@@ -43,6 +41,10 @@ object Format {
         format(obj.asInstanceOf[Array[Float]], stringBuffer)
       } else if (className.equals("[[F")) {
         format(obj.asInstanceOf[Array[Array[Float]]], stringBuffer);
+      } else if (className.equals("[B")) {
+        format(obj.asInstanceOf[Array[Boolean]], stringBuffer)
+      } else if (className.equals("[[B")) {
+        format(obj.asInstanceOf[Array[Array[Boolean]]], stringBuffer);
       } else if (className.equals("[C")) {
         format(obj.asInstanceOf[Array[Char]], stringBuffer);
       } else if (className.equals("[[C")) {
@@ -205,6 +207,26 @@ object Format {
     stringBuffer.append("]")
   }
 
+
+  private def format(array: Array[Boolean], stringBuffer: StringBuffer): Unit = {
+    if (array == null) {
+      stringBuffer.append("null")
+      return
+    }
+    stringBuffer.append("[")
+    var i = 0
+    while (i < array.length) {
+      val dataObj = array(i)
+
+      val data = dataObj.toString
+      stringBuffer.append(data)
+
+      if (i < array.length - 1) stringBuffer.append(',')
+      i += 1;
+    }
+    stringBuffer.append("]")
+  }
+
   private def format(matrix: Array[Array[Int]], stringBuffer: StringBuffer): Unit = {
     if (matrix == null) return
     val row = matrix.length
@@ -291,6 +313,29 @@ object Format {
     }
     stringBuffer.append("]")
   }
+
+
+  private def format(matrix: Array[Array[Boolean]], stringBuffer: StringBuffer): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    stringBuffer.append("[")
+    var i = 0
+    while (i < row) {
+      stringBuffer.append("[")
+      var j = 0
+      while (j < cow) {
+        stringBuffer.append(matrix(i)(j))
+        if (j < cow - 1) stringBuffer.append(',')
+        j += 1
+      }
+      stringBuffer.append("]")
+      if (i < row - 1) stringBuffer.append(',')
+      i += 1
+    }
+    stringBuffer.append("]")
+  }
+
 
   private def format(matrix: Array[Array[Char]], stringBuffer: StringBuffer): Unit = {
     if (matrix == null) return

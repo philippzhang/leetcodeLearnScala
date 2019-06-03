@@ -58,6 +58,24 @@ class CallBack {
       } else if (parameterName.equals("[[I")) {
         val matrix: Array[Array[Int]] = Build.buildMatrix(data)
         inputObjArr(j) = matrix
+      } else if (parameterName.equals("[B")) {
+        val array = Build.buildArrayBoolean(data)
+        inputObjArr(j) = array
+      } else if (parameterName.equals("[[B")) {
+        val matrix: Array[Array[Boolean]] = Build.buildMatrixBoolean(data)
+        inputObjArr(j) = matrix
+      } else if (parameterName.equals("[D")) {
+        val array = Build.buildArrayDouble(data)
+        inputObjArr(j) = array
+      } else if (parameterName.equals("[[D")) {
+        val matrix: Array[Array[Double]] = Build.buildMatrixDouble(data)
+        inputObjArr(j) = matrix
+      } else if (parameterName.equals("[F")) {
+        val array = Build.buildArrayFloat(data)
+        inputObjArr(j) = array
+      } else if (parameterName.equals("[[F")) {
+        val matrix: Array[Array[Float]] = Build.buildMatrixFloat(data)
+        inputObjArr(j) = matrix
       } else if (parameterName.equals("[C")) {
         val array = Build.buildArrayChar(data)
         inputObjArr(j) = array

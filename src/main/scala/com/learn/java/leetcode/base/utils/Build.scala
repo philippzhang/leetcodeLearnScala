@@ -43,6 +43,61 @@ object Build {
   }
 
 
+  def buildArrayBoolean(data: String): Array[Boolean] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    var ret = data.trim
+    if (ret.equals("[]")){
+      return new Array[Boolean](0)
+    }
+    ret = ret.replaceAll("\\[", "").replaceAll("\\]", "")
+    val arr = ret.split(",", -1)
+    val length = arr.length
+    val results = new Array[Boolean](length)
+    var i = 0
+    while (i < length) {
+      results(i) = arr(i).toBoolean
+      i += 1
+    }
+    results
+  }
+
+  def buildArrayDouble(data: String): Array[Double] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    var ret = data.trim
+    if (ret.equals("[]")){
+      return new Array[Double](0)
+    }
+    ret = ret.replaceAll("\\[", "").replaceAll("\\]", "")
+    val arr = ret.split(",", -1)
+    val length = arr.length
+    val results = new Array[Double](length)
+    var i = 0
+    while (i < length) {
+      results(i) = arr(i).toDouble
+      i += 1
+    }
+    results
+  }
+
+  def buildArrayFloat(data: String): Array[Float] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    var ret = data.trim
+    if (ret.equals("[]")){
+      return new Array[Float](0)
+    }
+    ret = ret.replaceAll("\\[", "").replaceAll("\\]", "")
+    val arr = ret.split(",", -1)
+    val length = arr.length
+    val results = new Array[Float](length)
+    var i = 0
+    while (i < length) {
+      results(i) = arr(i).toFloat
+      i += 1
+    }
+    results
+  }
+
+
   /**
     * 构建字符数组
     *
@@ -99,6 +154,70 @@ object Build {
       var j = 0
       while (j < cow) {
         results(i)(j) = arr2(j).toInt
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
+
+  def buildMatrixBoolean(data: String): Array[Array[Boolean]] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    var ret = data.replaceAll(" ", "")
+    ret = ret.substring(2, ret.length - 2)
+    val arr = ret.split("],\\[", -1)
+    val row = arr.length
+    val cow = StringUtil.countString(arr(0), ',') + 1
+    val results = ofDim[Boolean](row, cow)
+    var i = 0
+    while (i < row) {
+      val arr2 = arr(i).split(",", -1)
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = arr2(j).toBoolean
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
+  def buildMatrixDouble(data: String): Array[Array[Double]] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    var ret = data.replaceAll(" ", "")
+    ret = ret.substring(2, ret.length - 2)
+    val arr = ret.split("],\\[", -1)
+    val row = arr.length
+    val cow = StringUtil.countString(arr(0), ',') + 1
+    val results = ofDim[Double](row, cow)
+    var i = 0
+    while (i < row) {
+      val arr2 = arr(i).split(",", -1)
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = arr2(j).toDouble
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
+  def buildMatrixFloat(data: String): Array[Array[Float]] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    var ret = data.replaceAll(" ", "")
+    ret = ret.substring(2, ret.length - 2)
+    val arr = ret.split("],\\[", -1)
+    val row = arr.length
+    val cow = StringUtil.countString(arr(0), ',') + 1
+    val results = ofDim[Float](row, cow)
+    var i = 0
+    while (i < row) {
+      val arr2 = arr(i).split(",", -1)
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = arr2(j).toFloat
         j += 1
       }
       i += 1

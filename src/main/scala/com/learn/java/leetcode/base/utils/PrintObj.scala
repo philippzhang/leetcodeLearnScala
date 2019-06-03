@@ -2,8 +2,6 @@ package com.learn.java.leetcode.base.utils
 
 
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
-import com.learn.java.leetcode.base.utils.PrintObj.printObj
-
 import scala.collection.mutable.{ListBuffer, Stack}
 
 object PrintObj {
@@ -25,12 +23,16 @@ object PrintObj {
       } else if (className.equals("[[I")) {
         printObj(obj.asInstanceOf[Array[Array[Int]]])
       } else if (className.equals("[D")) {
-          printObj(obj.asInstanceOf[Array[Double]])
+        printObj(obj.asInstanceOf[Array[Double]])
       } else if (className.equals("[[D")) {
         printObj(obj.asInstanceOf[Array[Array[Double]]])
       } else if (className.equals("[F")) {
         printObj(obj.asInstanceOf[Array[Float]])
       } else if (className.equals("[[F")) {
+        printObj(obj.asInstanceOf[Array[Array[Float]]])
+      } else if (className.equals("[B")) {
+        printObj(obj.asInstanceOf[Array[Float]])
+      } else if (className.equals("[[B")) {
         printObj(obj.asInstanceOf[Array[Array[Float]]])
       } else if (className.equals("[C")) {
         printObj(obj.asInstanceOf[Array[Char]])
@@ -239,6 +241,21 @@ object PrintObj {
     println()
   }
 
+  private def printObj(array: Array[Boolean]): Unit = {
+    if (array == null) return
+    print("[")
+    var i = 0
+    while (i < array.length) {
+      print(array(i))
+      if (i < array.length - 1) {
+        print(',')
+      }
+      i += 1
+    }
+    print("]")
+    println()
+  }
+
   /**
     * 打印矩阵
     *
@@ -303,6 +320,30 @@ object PrintObj {
     * @param matrix
     */
   private def printObj(matrix: Array[Array[Float]]): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    print("[")
+    var i = 0
+    while (i < row) {
+      if (i == 0) println()
+      print("[")
+      var j = 0
+      while (j < cow) {
+        print(matrix(i)(j))
+        if (j < cow - 1) print(',')
+        j += 1
+      }
+      print("]")
+      if (i < row - 1) print(',')
+      println()
+      i += 1;
+    }
+    print("]")
+    println()
+  }
+
+  private def printObj(matrix: Array[Array[Boolean]]): Unit = {
     if (matrix == null) return
     val row = matrix.length
     val cow = matrix(0).length
