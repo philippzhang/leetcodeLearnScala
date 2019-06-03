@@ -27,10 +27,14 @@ object PrintObj {
         printObj(obj.asInstanceOf[Array[Array[Double]]])
       } else if (className.equals("[[F")) {
         printObj(obj.asInstanceOf[Array[Array[Float]]])
-      } else if (className.equals("[Ljava.lang.String;")) {
-        printObj(obj.asInstanceOf[Array[String]])
       } else if (className.equals("[C")) {
         printObj(obj.asInstanceOf[Array[Char]])
+      } else if (className.equals("[[C")) {
+        printObj(obj.asInstanceOf[Array[Array[Char]]])
+      } else if (className.equals("[Ljava.lang.String;")) {
+        printObj(obj.asInstanceOf[Array[String]])
+      } else if (className.equals("[[Ljava.lang.String;")) {
+        printObj(obj.asInstanceOf[Array[Array[String]]])
       } else if (className.equals("[Lcom.learn.java.leetcode.base.structure.ListNode;")) {
         printObj(obj.asInstanceOf[Array[ListNode]])
       } else {
@@ -163,9 +167,10 @@ object PrintObj {
         print(ext)
       }
       println()
-    }
-    if (obj.isInstanceOf[TreeNode]) {
+    } else if (obj.isInstanceOf[TreeNode]) {
       printObj(obj.asInstanceOf[TreeNode])
+    } else{
+      throw new RuntimeException("未定义的类型，打印失败!")
     }
   }
 
@@ -293,6 +298,35 @@ object PrintObj {
     println()
   }
 
+  /**
+    * 打印矩阵
+    *
+    * @param matrix
+    */
+  private def printObj(matrix: Array[Array[Char]]): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    print("[")
+    var i = 0
+    while (i < row) {
+      if (i == 0) println()
+      print("[")
+      var j = 0
+      while (j < cow) {
+        print("\""+matrix(i)(j)+"\"")
+        if (j < cow - 1) print(',')
+        j += 1
+      }
+      print("]")
+      if (i < row - 1) print(',')
+      println()
+      i += 1;
+    }
+    print("]")
+    println()
+  }
+
   private def printObj(array: Array[String]): Unit = {
     if (array == null) {
       return
@@ -306,6 +340,35 @@ object PrintObj {
         print(',')
       }
       i += 1
+    }
+    print("]")
+    println()
+  }
+
+  /**
+    * 打印矩阵
+    *
+    * @param matrix
+    */
+  private def printObj(matrix: Array[Array[String]]): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    print("[")
+    var i = 0
+    while (i < row) {
+      if (i == 0) println()
+      print("[")
+      var j = 0
+      while (j < cow) {
+        print("\""+matrix(i)(j)+"\"")
+        if (j < cow - 1) print(',')
+        j += 1
+      }
+      print("]")
+      if (i < row - 1) print(',')
+      println()
+      i += 1;
     }
     print("]")
     println()

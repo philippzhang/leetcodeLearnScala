@@ -1,7 +1,6 @@
 package com.learn.java.leetcode.base.utils
 
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
-
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 import scala.util.control.Breaks
 
@@ -40,8 +39,12 @@ object Format {
         format(obj.asInstanceOf[Array[Array[Float]]], stringBuffer);
       } else if (className.equals("[C")) {
         format(obj.asInstanceOf[Array[Char]], stringBuffer);
+      } else if (className.equals("[[C")) {
+          format(obj.asInstanceOf[Array[Array[Char]]], stringBuffer);
       } else if (className.equals("[Ljava.lang.String;")) {
         format(obj.asInstanceOf[Array[String]], stringBuffer);
+      } else if (className.equals("[[Ljava.lang.String;")) {
+        format(obj.asInstanceOf[Array[Array[String]]], stringBuffer);
       } else if (className.equals("[Lcom.learn.java.leetcode.base.structure.ListNode;")) {
         format(obj.asInstanceOf[Array[ListNode]], stringBuffer)
       } else {
@@ -131,7 +134,10 @@ object Format {
       stringBuffer.append("]")
     } else if (obj.isInstanceOf[TreeNode]) {
       format(obj.asInstanceOf[TreeNode], stringBuffer)
+    } else{
+      throw new RuntimeException("未定义的类型，转换失败!")
     }
+
   }
 
 
@@ -241,6 +247,27 @@ object Format {
     stringBuffer.append("]")
   }
 
+  private def format(matrix: Array[Array[Char]], stringBuffer: StringBuffer): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    stringBuffer.append("[")
+    var i = 0
+    while (i < row) {
+      stringBuffer.append("[")
+      var j = 0
+      while (j < cow) {
+        stringBuffer.append("\"").append(matrix(i)(j)).append("\"")
+        if (j < cow - 1) stringBuffer.append(',')
+        j += 1
+      }
+      stringBuffer.append("]")
+      if (i < row - 1) stringBuffer.append(',')
+      i += 1
+    }
+    stringBuffer.append("]")
+  }
+
   private def format(array: Array[String], stringBuffer: StringBuffer): Unit = {
     if (array == null) {
       stringBuffer.append("null")
@@ -260,6 +287,27 @@ object Format {
       if (i < array.length - 1) {
         stringBuffer.append(',')
       }
+      i += 1
+    }
+    stringBuffer.append("]")
+  }
+
+  private def format(matrix: Array[Array[String]], stringBuffer: StringBuffer): Unit = {
+    if (matrix == null) return
+    val row = matrix.length
+    val cow = matrix(0).length
+    stringBuffer.append("[")
+    var i = 0
+    while (i < row) {
+      stringBuffer.append("[")
+      var j = 0
+      while (j < cow) {
+        stringBuffer.append("\"").append(matrix(i)(j)).append("\"")
+        if (j < cow - 1) stringBuffer.append(',')
+        j += 1
+      }
+      stringBuffer.append("]")
+      if (i < row - 1) stringBuffer.append(',')
       i += 1
     }
     stringBuffer.append("]")

@@ -106,6 +106,64 @@ object Build {
     results
   }
 
+
+  /**
+    * 构建二维字符数组
+    * 例如[["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]
+    *
+    * @param data
+    * @return
+    */
+  def buildMatrixChar(data: String): Array[Array[Char]] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    var ret = data.replaceAll(" ", "")
+    ret = ret.substring(2, ret.length - 2)
+    val arr = ret.split("],\\[", -1)
+    val row = arr.length
+    val cow = StringUtil.countString(arr(0), ',') + 1
+    val results = ofDim[Char](row, cow)
+    var i = 0
+    while (i < row) {
+      val arr2 = arr(i).split(",", -1)
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = StringUtil.changeStr(arr2(j)).charAt(0)
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
+
+  /**
+    * 构建二维字符串数组
+    * 例如[["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]
+    *
+    * @param data
+    * @return
+    */
+  def buildMatrixString(data: String): Array[Array[String]] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    var ret = data.replaceAll(" ", "")
+    ret = ret.substring(2, ret.length - 2)
+    val arr = ret.split("],\\[", -1)
+    val row = arr.length
+    val cow = StringUtil.countString(arr(0), ',') + 1
+    val results = ofDim[String](row, cow)
+    var i = 0
+    while (i < row) {
+      val arr2 = arr(i).split(",", -1)
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = StringUtil.changeStr(arr2(j))
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
   /**
     * 字符串构建字符串数组
     * 例如["flower","flow","flight"]

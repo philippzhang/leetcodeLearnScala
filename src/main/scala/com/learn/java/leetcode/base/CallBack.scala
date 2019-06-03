@@ -34,19 +34,7 @@ class CallBack {
     while (j < parameterTypes.length) {
       val parameterName = parameterTypes(j).getName
       val data: String = dataList(j)
-      if (parameterName.equals("[I")) {
-        val array = Build.buildArray(data)
-        inputObjArr(j) = array
-      } else if (parameterName.equals("[C")) {
-        val array = Build.buildArrayChar(data)
-        inputObjArr(j) = array
-      } else if (parameterName.equals("[[I")) {
-        val matrix: Array[Array[Int]] = Build.buildMatrix(data)
-        inputObjArr(j) = matrix
-      } else if (parameterName.equals("[Ljava.lang.String;")) {
-        val array: Array[String] = Build.buildArrayString(data);
-        inputObjArr(j) = array;
-      } else if (parameterName.equals("int")) {
+      if (parameterName.equals("int")) {
         val v = data.toInt
         inputObjArr(j) = v
       } else if (parameterName.equals("long")) {
@@ -64,8 +52,26 @@ class CallBack {
       } else if (parameterName.equals("short")) {
         val v = data.toShort
         inputObjArr(j) = v
+      } else if (parameterName.equals("[I")) {
+        val array = Build.buildArray(data)
+        inputObjArr(j) = array
+      } else if (parameterName.equals("[[I")) {
+        val matrix: Array[Array[Int]] = Build.buildMatrix(data)
+        inputObjArr(j) = matrix
+      } else if (parameterName.equals("[C")) {
+        val array = Build.buildArrayChar(data)
+        inputObjArr(j) = array
+      } else if (parameterName.equals("[[C")) {
+        val matrix: Array[Array[Char]] = Build.buildMatrixChar(data)
+        inputObjArr(j) = matrix
       } else if (parameterName.equals("java.lang.String")) {
         inputObjArr(j) = StringUtil.changeStr(data)
+      } else if (parameterName.equals("[Ljava.lang.String;")) {
+        val array: Array[String] = Build.buildArrayString(data);
+        inputObjArr(j) = array;
+      } else if (parameterName.equals("[[[Ljava.lang.String;")) {
+        val matrix: Array[Array[String]] = Build.buildMatrixString(data)
+        inputObjArr(j) = matrix
       } else if (parameterName.equals("com.learn.java.leetcode.base.structure.ListNode")) {
         val listNode = Build.buildListNode(data)
         inputObjArr(j) = listNode
@@ -76,11 +82,13 @@ class CallBack {
         val treeNode: TreeNode = Build.buildBinaryTree(data)
         inputObjArr(j) = treeNode
       } else if (parameterName.equals("scala.collection.immutable.List")) {
-           val list = Build.buildList(data)
-           inputObjArr(j) = list
+        val list = Build.buildList(data)
+        inputObjArr(j) = list
       } else if (parameterName.equals("scala.collection.mutable.ListBuffer")) {
         val list = Build.buildListBuffer(data)
         inputObjArr(j) = list
+      } else {
+        throw new RuntimeException("未定义的类型，构建失败!")
       }
       j += 1
     }
@@ -120,7 +128,7 @@ class CallBack {
         var disOrder = false
         var j = inputObjArr.length
         while (j < dataList.size) {
-          if (dataList(j) .equals( "$disorder")) { //List 无序标志
+          if (dataList(j).equals("$disorder")) { //List 无序标志
             disOrder = true
           }
           j += 1
@@ -132,7 +140,7 @@ class CallBack {
             val testResultsList = outputObj.asInstanceOf[List[_]]
             val trueResultsNewList = Build.buildList(trueResult)
             resultFlag = Utilitys.compareListsIgnoreOrder(trueResultsNewList, testResultsList)
-          }else {
+          } else {
             resultFlag = trueResult.equals(testResult)
           }
         } else if (outputObj != null && parameterName == "[I") {
@@ -142,13 +150,13 @@ class CallBack {
             resultFlag = Utilitys.compareArrays(trueResultsArray, testResultsArray)
           }
           else resultFlag = trueResult == testResult
-        }else if (outputObj != null && parameterName.equals("[Ljava.lang.String;")) {
+        } else if (outputObj != null && parameterName.equals("[Ljava.lang.String;")) {
           if (disOrder) {
             val testResultsArray: Array[String] = outputObj.asInstanceOf[Array[String]]
             val trueResultsArray: Array[String] = Build.buildArrayString(trueResult)
             resultFlag = Utilitys.compareArraysString(trueResultsArray, testResultsArray)
           } else resultFlag = trueResult.equals(testResult)
-        }else if (outputObj != null && parameterName.equals("[C")) {
+        } else if (outputObj != null && parameterName.equals("[C")) {
           if (disOrder) {
             val testResultsArray: Array[Char] = outputObj.asInstanceOf[Array[Char]]
             val trueResultsArray: Array[Char] = Build.buildArrayChar(trueResult);
