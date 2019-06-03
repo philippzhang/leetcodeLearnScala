@@ -142,6 +142,9 @@ object Build {
     */
   def buildMatrix(data: String): Array[Array[Int]] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    if (data.equals("[]")){
+      return ofDim[Int](0,0)
+    }
     var ret = data.replaceAll(" ", "")
     ret = ret.substring(2, ret.length - 2)
     val arr = ret.split("],\\[", -1)
@@ -164,6 +167,9 @@ object Build {
 
   def buildMatrixBoolean(data: String): Array[Array[Boolean]] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    if (data.equals("[]")){
+      return ofDim[Boolean](0,0)
+    }
     var ret = data.replaceAll(" ", "")
     ret = ret.substring(2, ret.length - 2)
     val arr = ret.split("],\\[", -1)
@@ -185,6 +191,9 @@ object Build {
 
   def buildMatrixDouble(data: String): Array[Array[Double]] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    if (data.equals("[]")){
+      return ofDim[Double](0,0)
+    }
     var ret = data.replaceAll(" ", "")
     ret = ret.substring(2, ret.length - 2)
     val arr = ret.split("],\\[", -1)
@@ -206,6 +215,9 @@ object Build {
 
   def buildMatrixFloat(data: String): Array[Array[Float]] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    if (data.equals("[]")){
+      return ofDim[Float](0,0)
+    }
     var ret = data.replaceAll(" ", "")
     ret = ret.substring(2, ret.length - 2)
     val arr = ret.split("],\\[", -1)
@@ -235,6 +247,9 @@ object Build {
     */
   def buildMatrixChar(data: String): Array[Array[Char]] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    if (data.equals("[]")){
+      return ofDim[Char](0,0)
+    }
     var ret = data.replaceAll(" ", "")
     ret = ret.substring(2, ret.length - 2)
     val arr = ret.split("],\\[", -1)
@@ -264,6 +279,9 @@ object Build {
     */
   def buildMatrixString(data: String): Array[Array[String]] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    if (data.equals("[]")){
+      return ofDim[String](0,0)
+    }
     var ret = data.replaceAll(" ", "")
     ret = ret.substring(2, ret.length - 2)
     val arr = ret.split("],\\[", -1)
