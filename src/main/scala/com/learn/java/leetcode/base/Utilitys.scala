@@ -216,7 +216,7 @@ object Utilitys {
                 * 验证输入参数
                 */
               val inputIndex: Int = trueResult.substring(1, 2).toInt
-              val trueInputResult: String = trueResult.substring(3)
+              val trueInputResult: String = trueResult.substring(3).trim
               if (StringUtils.isNotBlank(trueInputResult) && inputIndex >= 0 && inputIndex < inputObjArr.length) try {
                 val resultFlag: Boolean = callBack.inputVerify(inputObjArr, trueInputResult, outputObj, inputIndex, tempList)
                 if (!resultFlag) testFlag = false

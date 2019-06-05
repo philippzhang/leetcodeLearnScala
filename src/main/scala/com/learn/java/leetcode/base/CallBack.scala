@@ -136,7 +136,7 @@ class CallBack {
     val testResult = Format.format(outputObj)
     var i = 0
     while (i < trueResultList.size) {
-      val trueResult = trueResultList(i)
+      val trueResult = trueResultList(i).trim
       if (trueResult.equals("null") && outputObj == null) {
         printOutVerify(trueResultList, null, true)
         return true
