@@ -46,4 +46,8 @@ object StringUtil {
     }
     ret
   }
+
+  def IsEqual(a: Double, b: Double): Boolean = Math.abs(a - b) < 0.000001
+
+  def IsEqual(a: Float, b: Float): Boolean = Math.abs(a - b) < 0.000001
 }

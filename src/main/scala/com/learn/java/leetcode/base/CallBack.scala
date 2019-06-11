@@ -190,6 +190,14 @@ class CallBack {
           } else {
             resultFlag = trueResult.equals(testResult);
           }
+        } else if (outputObj != null && outputObj.isInstanceOf[Double]) {
+          val testResultDouble: Double = outputObj.toString.toDouble
+          val trueResultDouble: Double = trueResult.toDouble
+          resultFlag = StringUtil.IsEqual(testResultDouble, trueResultDouble)
+        } else if (outputObj != null && outputObj.isInstanceOf[Float]) {
+          val testResultFloat: Float = outputObj.toString().toFloat
+          val trueResultFloat: Float = trueResult.toFloat
+          resultFlag = StringUtil.IsEqual(testResultFloat, trueResultFloat);
         } else {
           resultFlag = trueResult.equals(testResult)
         }
