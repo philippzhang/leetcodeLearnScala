@@ -1,6 +1,10 @@
 package com.learn.java.leetcode.base.utils
 
-import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
+
+import com.google.gson.{JsonArray, JsonElement, JsonObject}
+import com.learn.java.leetcode.base.Utilitys
+import com.learn.java.leetcode.base.structure.{ListNode, Node, TreeNode}
+
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 import scala.util.control.Breaks
 
@@ -69,13 +73,16 @@ object Format {
         }
         if (item.isInstanceOf[Int] ||  item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
           stringBuffer.append(item)
-        }else if(item.isInstanceOf[String] ){
+        } else if(item.isInstanceOf[String] ){
           stringBuffer.append("\"" + StringUtil.changeStr(item.toString) + "\"")
-        }
-        else {
-          if (item.isInstanceOf[List[_]]) {
-            format(item, stringBuffer)
-          }
+        } else if (item.isInstanceOf[List[_]]) {
+          format(item, stringBuffer)
+        } else  if (item.isInstanceOf[TreeNode]) {
+          format(item.asInstanceOf[TreeNode], stringBuffer)
+        } else if (item.isInstanceOf[Node]) {
+          format(item.asInstanceOf[Node], stringBuffer)
+        } else if (item != null) {
+          throw new RuntimeException("未定义的List泛型，转换失败!")
         }
         if (i < results.size - 1) {
           stringBuffer.append(',')
@@ -95,10 +102,10 @@ object Format {
         if (item.isInstanceOf[Int] || item.isInstanceOf[String] || item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
           stringBuffer.append(item)
         }
-        else {
-          if (item.isInstanceOf[ListBuffer[_]]) {
+        else if (item.isInstanceOf[ListBuffer[_]]) {
             format(item, stringBuffer)
-          }
+        }else if (item != null) {
+          throw new RuntimeException("未定义的ListBuffer泛型，转换失败!")
         }
         if (i < results.size - 1) {
           stringBuffer.append(',')
@@ -106,7 +113,7 @@ object Format {
         i += 1
       }
       stringBuffer.append("]")
-    } else if (obj.isInstanceOf[List[_]]) {
+    } /*else if (obj.isInstanceOf[List[_]]) {
       val results: List[_] = obj.asInstanceOf[List[_]]
       stringBuffer.append("[")
       var i: Int = 0
@@ -129,7 +136,7 @@ object Format {
         i += 1
       }
       stringBuffer.append("]")
-    }
+    }*/
 
     else if (obj.isInstanceOf[ListNode]) {
       val listNode: ListNode = obj.asInstanceOf[ListNode];
@@ -142,6 +149,8 @@ object Format {
       stringBuffer.append("]")
     } else if (obj.isInstanceOf[TreeNode]) {
       format(obj.asInstanceOf[TreeNode], stringBuffer)
+    } else if (obj.isInstanceOf[Node]) {
+      format(obj.asInstanceOf[Node], stringBuffer)
     } else{
       throw new RuntimeException("未定义的类型，转换失败!")
     }
@@ -445,6 +454,11 @@ object Format {
     stringBuffer.append("]")
   }
 
+  /**
+    * 格式化TreeNode
+    * @param treeNode
+    * @param stringBuffer
+    */
   private def format(treeNode: TreeNode, stringBuffer: StringBuffer): Unit = {
     if (treeNode == null) {
       stringBuffer.append("null")
@@ -490,6 +504,67 @@ object Format {
       if (stringBuffer.length > 0) stringBuffer.deleteCharAt(stringBuffer.length - 1)
     }
     stringBuffer.toString
+  }
+
+  /**
+    * 格式化Node
+    * @param node
+    * @param stringBuffer
+    */
+  private def format(node: Node, stringBuffer: StringBuffer): Unit = {
+    if (node == null) {
+      stringBuffer.append("null")
+      return
+    }
+    val jsonObject: JsonObject = node2JsonObject(node)
+    nodeAddId(jsonObject)
+    stringBuffer.append(Utilitys.sortJsonObject(jsonObject.toString))
+  }
+
+
+  private def node2JsonObject(cur: Node): JsonObject = {
+    if (cur == null) return null
+
+    val jsonObject: JsonObject = new JsonObject
+    val jsonArray: JsonArray = new JsonArray
+    if (cur.children != null) {
+      val child: List[Node] = cur.children
+      if (child != null && child.size > 0) {
+        var i: Int = 0
+        while (i < child.size) {
+          val temp: Node = child(i)
+          jsonArray.add(node2JsonObject(temp))
+            i += 1
+        }
+      }
+      jsonObject.add("children", jsonArray)
+    }
+    else jsonObject.add("children", jsonArray)
+    jsonObject.addProperty("val", cur.value)
+    jsonObject
+  }
+
+  private def nodeAddId(rootObject: JsonObject): Unit = {
+    var index: Int = 1
+    val queue: Queue[JsonObject] = new Queue()
+    queue.enqueue(rootObject)
+    while (!queue.isEmpty) {
+      val jsonObject: JsonObject = queue.dequeue()
+      jsonObject.addProperty("$id", String.valueOf({
+        index += 1
+      }))
+      val jsonArray: JsonArray = jsonObject.getAsJsonArray("children")
+      if (jsonArray != null && jsonArray.size > 0) {
+        var i: Int = 0
+        while (i < jsonArray.size) {
+          val childJsonElement: JsonElement = jsonArray.get(i)
+          val childJsonObject: JsonObject = if (childJsonElement != null && !childJsonElement.isJsonNull) childJsonElement.getAsJsonObject
+          else null
+          if (childJsonObject != null) queue.enqueue(childJsonObject)
+            i += 1
+        }
+      }
+    }
   }
 
 }

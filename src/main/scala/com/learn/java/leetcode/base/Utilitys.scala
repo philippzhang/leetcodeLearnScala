@@ -3,10 +3,13 @@ package com.learn.java.leetcode.base
 
 import java.io.{File, IOException}
 import java.lang.reflect.{Constructor, InvocationTargetException, Method}
+import java.util
 
+import com.google.gson.{JsonArray, JsonElement, JsonParser}
 import com.learn.java.leetcode.base.utils.{Build, NoImplException, PrintObj, StringUtil}
 import org.apache.commons.lang.StringUtils
 
+import scala.collection.immutable.TreeMap
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 import scala.util.control.Breaks
@@ -194,12 +197,22 @@ object Utilitys {
 
           //格式化打印
           if (!("Unit".equals(returnTypeName))) { //打印输出
-            try
-              callBack.printOutput(outputObj)
-            catch {
-              case e: Exception =>
-                e.printStackTrace()
-                testFlag = false
+            var enprint: Boolean = true
+            var l: Int = inputObjArr.length
+            while (l < dataList.size) {
+              if (dataList(l).equals("$disprint")) {
+                enprint = false
+              }
+              l += 1
+            }
+            if (enprint) {
+              try
+                callBack.printOutput(outputObj)
+              catch {
+                case e: Exception =>
+                  e.printStackTrace()
+                  testFlag = false
+              }
             }
           }
 
@@ -218,7 +231,7 @@ object Utilitys {
               val inputIndex: Int = trueResult.substring(1, 2).toInt
               val trueInputResult: String = trueResult.substring(3).trim
               if (StringUtils.isNotBlank(trueInputResult) && inputIndex >= 0 && inputIndex < inputObjArr.length) try {
-                val resultFlag: Boolean = callBack.inputVerify(inputObjArr, trueInputResult, outputObj, inputIndex, tempList)
+                val resultFlag: Boolean = callBack.inputVerify(inputObjArr, trueInputResult, outputObj, inputIndex, dataList, tempList)
                 if (!resultFlag) testFlag = false
               } catch {
                 case e: Exception =>
@@ -672,6 +685,47 @@ object Utilitys {
         i += 1
     }
     true
+  }
+
+
+  def sort(e: JsonElement): Unit = {
+    if (e.isJsonNull) return
+    if (e.isJsonPrimitive) return
+    if (e.isJsonArray) {
+      val a: JsonArray = e.getAsJsonArray
+      val it: util.Iterator[JsonElement] = a.iterator
+      while (it.hasNext) {
+        sort(it.next)
+      }
+      return
+    }
+    if (e.isJsonObject) {
+      val tm: Map[String, JsonElement] = TreeMap[String, JsonElement]()
+      import scala.collection.JavaConversions._
+      for (en <- e.getAsJsonObject.entrySet) {
+        tm.put(en.getKey, en.getValue)
+      }
+      import scala.collection.JavaConversions._
+      for (en <- tm.entrySet) {
+        e.getAsJsonObject.remove(en.getKey)
+        e.getAsJsonObject.add(en.getKey, en.getValue)
+        sort(en.getValue)
+      }
+      return
+    }
+  }
+
+  /**
+    * 排序Json字符串
+    *
+    * @param json
+    * @return
+    */
+  def sortJsonObject(json: String): String = {
+    val p: JsonParser = new JsonParser
+    val e: JsonElement = p.parse(json)
+    sort(e)
+    e.toString
   }
 
   def main(args: Array[String]): Unit = {

@@ -1,6 +1,8 @@
 package com.learn.java.leetcode.base.utils
 
-import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
+
+import com.google.gson.{JsonArray, JsonElement, JsonObject, JsonParser}
+import com.learn.java.leetcode.base.structure.{ListNode, Node, TreeNode}
 
 import scala.Array._
 import scala.collection.mutable.{ListBuffer, Queue}
@@ -461,6 +463,43 @@ object Build {
       i += 2
     }
     queue.clear()
+    root
+  }
+
+
+  /**
+    * 构建N叉树
+    *
+    * @param data
+    * @return
+    */
+  def buildMultiTree(data: String): Node = {
+    if (data == null || data.trim.length <= 0 || data == "null" || data == "{}") return null
+    //创建json解析器,注意这里如果用fastJson解析不了
+    val parse: JsonParser = new JsonParser
+    val jsonObject: JsonObject = parse.parse(data).asInstanceOf[JsonObject]
+    val value: Int = jsonObject.get("val").getAsInt
+    //根节点
+    val root: Node = new Node(value, null)
+    val childJsonJsonArray: JsonArray = jsonObject.getAsJsonArray("children")
+    if (childJsonJsonArray != null && !childJsonJsonArray.isJsonNull) {
+      var tempList: List[Node] = List()
+      var j: Int = 0
+      while (j < childJsonJsonArray.size) {
+        val childJsonElement: JsonElement = childJsonJsonArray.get(j)
+        val childJsonObject: JsonObject = if (childJsonElement != null && !childJsonElement.isJsonNull) childJsonElement.getAsJsonObject
+        else null
+        if (childJsonObject != null) {
+          val childData: String = childJsonObject.toString
+          val temp: Node = buildMultiTree(childData)
+          tempList = tempList:+(temp)
+        }
+
+          j += 1
+
+      }
+      root.children = tempList
+    }
     root
   }
 

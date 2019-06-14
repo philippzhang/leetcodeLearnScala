@@ -1,7 +1,8 @@
 package com.learn.java.leetcode.base.utils
 
 
-import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
+import com.learn.java.leetcode.base.structure.{ListNode, Node, TreeNode}
+
 import scala.collection.mutable.{ListBuffer, Stack}
 
 object PrintObj {
@@ -47,7 +48,7 @@ object PrintObj {
       } else {
         printObj(obj.asInstanceOf[Array[Any]])
       }
-    } else if (obj.isInstanceOf[List[_]]) {
+    } /*else if (obj.isInstanceOf[List[_]]) {
       val results: List[_] = obj.asInstanceOf[List[_]]
       print("[")
       var i: Int = 0
@@ -85,7 +86,7 @@ object PrintObj {
         print(ext)
       }
       println()
-    } else if (obj.isInstanceOf[ListBuffer[_]]) {
+    } */else if (obj.isInstanceOf[ListBuffer[_]]) {
       val results: ListBuffer[_] = obj.asInstanceOf[ListBuffer[_]]
       print("[")
       var i: Int = 0
@@ -103,8 +104,7 @@ object PrintObj {
             print(',')
           }
         }
-        else {
-          if (item.isInstanceOf[ListBuffer[_]]) {
+        else if (item.isInstanceOf[ListBuffer[_]]) {
             if (i == 0) {
               println()
             }
@@ -114,8 +114,10 @@ object PrintObj {
             else {
               printObj(item, null)
             }
-          }
+        }else if (item != null) {
+          throw new RuntimeException("未定义的ListBuffer泛型，打印失败!")
         }
+
         i += 1
       }
       print("]")
@@ -140,9 +142,7 @@ object PrintObj {
           if (i < results.size - 1) {
             print(',')
           }
-        }
-        else {
-          if (item.isInstanceOf[List[_]]) {
+        } else if (item.isInstanceOf[List[_]]) {
             if (i == 0) {
               println()
             }
@@ -152,7 +152,16 @@ object PrintObj {
             else {
               printObj(item, null)
             }
-          }
+        } else if (item.isInstanceOf[TreeNode]) {
+          if (i == 0) System.out.println()
+          print(item.asInstanceOf[TreeNode])
+          System.out.println()
+        } else if (item.isInstanceOf[Node]) {
+          if (i == 0) System.out.println()
+          print(item.asInstanceOf[Node])
+          System.out.println()
+        } else if (item != null) {
+          throw new RuntimeException("未定义的List泛型，打印失败!")
         }
         i += 1
       }
@@ -176,7 +185,9 @@ object PrintObj {
       println()
     } else if (obj.isInstanceOf[TreeNode]) {
       printObj(obj.asInstanceOf[TreeNode])
-    } else{
+    } else if (obj.isInstanceOf[Node]) {
+      printObj(obj.asInstanceOf[Node]);
+    } else {
       throw new RuntimeException("未定义的类型，打印失败!")
     }
   }
@@ -400,7 +411,7 @@ object PrintObj {
       print("[")
       var j = 0
       while (j < cow) {
-        print("\""+matrix(i)(j)+"\"")
+        print("\"" + matrix(i)(j) + "\"")
         if (j < cow - 1) print(',')
         j += 1
       }
@@ -447,7 +458,7 @@ object PrintObj {
       print("[")
       var j = 0
       while (j < cow) {
-        print("\""+matrix(i)(j)+"\"")
+        print("\"" + matrix(i)(j) + "\"")
         if (j < cow - 1) print(',')
         j += 1
       }
@@ -584,4 +595,97 @@ object PrintObj {
       return 0
     }
   }
+
+  /**
+    * N叉树的高度
+    *
+    * @param root
+    * @return
+    */
+  private def getDepth(root: Node): Int = {
+    if (root != null) {
+      var max = 0
+      if (root.children != null && root.children.size > 0) {
+        var i = 0
+        while (i < root.children.size) {
+          val depth = getDepth(root.children(i))
+          max = Math.max(max, depth)
+          i += 1
+        }
+      }
+      max + 1
+    }
+    else 0
+  }
+
+  /**
+    * 竖向打印N叉树
+    *
+    * @param root 二叉树根节点
+    */
+  private def printObj(root: Node): Unit = {
+    if (root == null) return
+    val globalStack: Stack[Node] = Stack()
+    globalStack.push(root)
+    val depth = getDepth(root)
+    var nBlank = Math.pow(2, depth + 1).toInt
+    val ndot = nBlank * 2
+    var isRowEmpty = false
+    var i = 0
+    while (i < ndot) {
+      System.out.print('.')
+      i += 1
+    }
+    System.out.println()
+    while (isRowEmpty == false) {
+      val localStack: Stack[Node] = Stack()
+      isRowEmpty = true
+      var j = 0
+      while (j < nBlank) {
+        System.out.print(' ')
+        j += 1
+      }
+      while (!globalStack.isEmpty) { //里面的while循环用于查看全局的栈是否为空
+        val temp = globalStack.pop
+        if (temp != null) {
+          System.out.print(temp.value)
+          System.out.print(' ')
+          if (temp.children != null && temp.children.size > 0) {
+            var i = 0
+            while (i < temp.children.size) {
+              localStack.push(temp.children(i))
+              if (temp.children(i) != null) { //如果当前的节点下面还有子节点，则必须要进行下一层的循环
+                isRowEmpty = false
+              }
+              i += 1
+            }
+          }
+        }
+        else { //如果全局的栈则不为空
+          System.out.print("# ")
+          localStack.push(null)
+          localStack.push(null)
+        }
+        //打印一些空格
+        var j = 0
+        while (j < nBlank * 2 - 2) {
+          System.out.print(' ')
+          j += 1
+        }
+      } //while end
+      System.out.println()
+      nBlank /= 2
+      //这个while循环用来判断，local栈是否为空,不为空的话，则取出来放入全局栈中
+      while (!localStack.isEmpty) {
+        globalStack.push(localStack.pop)
+      }
+    } //大while循环结束之后，输出换行
+    i = 0
+    while (i < ndot) {
+      System.out.print('.')
+      i += 1
+    }
+    println()
+  }
+
 }

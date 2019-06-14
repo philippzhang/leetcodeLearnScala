@@ -1,7 +1,8 @@
 package com.learn.java.leetcode.base
 
+
 import com.learn.java.leetcode.base.structure.{ListNode, TreeNode}
-import com.learn.java.leetcode.base.utils.{Build, Format, PrintObj, StringUtil}
+import com.learn.java.leetcode.base.utils._
 
 import scala.collection.mutable.ListBuffer
 
@@ -105,6 +106,9 @@ class CallBack {
       } else if (parameterName.equals("scala.collection.mutable.ListBuffer")) {
         val list = Build.buildListBuffer(data)
         inputObjArr(j) = list
+      } else if (parameterName .equals( "com.learn.java.leetcode.base.structure.Node")) {
+        val node = Build.buildMultiTree(data);
+        inputObjArr(j) = node
       } else {
         throw new RuntimeException("未定义的类型，构建失败!")
       }
@@ -251,9 +255,29 @@ class CallBack {
     * @param inputIndex      需要验证的入参参数序号
     * @param tempList        临时缓存，用于数据传递
     */
-  def inputVerify(inputObjArr: Array[Any], trueInputResult: String, outputObj: Any, inputIndex: Int, tempList: ListBuffer[_]): Boolean = {
+  def inputVerify(inputObjArr: Array[Any], trueInputResult: String, outputObj: Any, inputIndex: Int, dataList: ListBuffer[String], tempList: ListBuffer[_]): Boolean = {
     try {
       val inputObj = inputObjArr(inputIndex)
+
+      var enprint = false
+      var j = inputObjArr.length
+      while (j < dataList.size) {
+        if (dataList(j) .equals ("$enprint")) { //打印输入
+          enprint = true
+        }
+          j += 1
+      }
+      if (enprint) {
+        try {
+          System.out.println("格式输入:")
+          PrintObj.printObj(inputObj)
+        } catch {
+          case e: Exception =>
+            e.printStackTrace()
+            return false
+        }
+      }
+
       val testInputResult = Format.format(inputObj)
       val resultFlag = trueInputResult == testInputResult
       printInputVerify(trueInputResult, testInputResult, resultFlag)
