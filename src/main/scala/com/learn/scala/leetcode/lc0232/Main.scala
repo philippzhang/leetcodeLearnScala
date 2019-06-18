@@ -1,6 +1,6 @@
-package com.learn.java.leetcode.lc0103
+package com.learn.scala.leetcode.lc0232
 
-import com.learn.java.leetcode.base.{CallBack, Utilitys}
+import com.learn.scala.leetcode.base.{CallBack, Utilitys}
 
 class Main extends CallBack {
 }

@@ -121,8 +121,18 @@ class CallBack {
     * @param outputObj 算法输出值
     */
   def printOutput(outputObj: Any): Unit = {
-    System.out.println("格式输出:")
+    System.out.println("格式化输出参数:")
     PrintObj.printObj(outputObj)
+  }
+
+  /**
+    * 打印输入参数方法
+    *
+    * @param inputObj 算法输入值
+    */
+  def printInput(inputObj: Any): Unit = {
+    System.out.println("格式化输入参数:")
+    PrintObj.printObj(inputObj)
   }
 
   /**
@@ -257,26 +267,6 @@ class CallBack {
   def inputVerify(inputObjArr: Array[Any], trueInputResult: String, outputObj: Any, inputIndex: Int, dataList: ListBuffer[String], tempList: ListBuffer[_]): Boolean = {
     try {
       val inputObj = inputObjArr(inputIndex)
-
-      var enprint = false
-      var j = inputObjArr.length
-      while (j < dataList.size) {
-        if (dataList(j) .equals ("$enprint")) { //打印输入
-          enprint = true
-        }
-          j += 1
-      }
-      if (enprint) {
-        try {
-          System.out.println("格式输入:")
-          PrintObj.printObj(inputObj)
-        } catch {
-          case e: Exception =>
-            e.printStackTrace()
-            return false
-        }
-      }
-
       val testInputResult = Format.format(inputObj)
       val resultFlag = trueInputResult == testInputResult
       printInputVerify(trueInputResult, testInputResult, resultFlag)

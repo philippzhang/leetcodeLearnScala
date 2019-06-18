@@ -47,45 +47,7 @@ object PrintObj {
       } else {
         printObj(obj.asInstanceOf[Array[Any]])
       }
-    } /*else if (obj.isInstanceOf[List[_]]) {
-      val results: List[_] = obj.asInstanceOf[List[_]]
-      print("[")
-      var i: Int = 0
-      while (i < results.size) {
-        val item: Any = results(i)
-        if (item == null) {
-          print("null")
-          if (i < results.size - 1) {
-            print(',')
-          }
-        }
-        if (item.isInstanceOf[Int] || item.isInstanceOf[String] || item.isInstanceOf[Long] || item.isInstanceOf[Double] || item.isInstanceOf[Float] || item.isInstanceOf[Boolean]) {
-          print(item)
-          if (i < results.size - 1) {
-            print(',')
-          }
-        }
-        else {
-          if (item.isInstanceOf[List[_]]) {
-            if (i == 0) {
-              println()
-            }
-            if (i < results.size - 1) {
-              printObj(item, ",")
-            }
-            else {
-              printObj(item, null)
-            }
-          }
-        }
-        i += 1
-      }
-      print("]")
-      if (ext != null) {
-        print(ext)
-      }
-      println()
-    } */else if (obj.isInstanceOf[ListBuffer[_]]) {
+    } else if (obj.isInstanceOf[ListBuffer[_]]) {
       val results: ListBuffer[_] = obj.asInstanceOf[ListBuffer[_]]
       print("[")
       var i: Int = 0
@@ -189,6 +151,26 @@ object PrintObj {
     } else {
       throw new RuntimeException("未定义的类型，打印失败!")
     }
+  }
+
+  def judgePrint(obj: Any): Boolean = {
+    if (obj == null) return false
+    if (obj.isInstanceOf[ListNode] || obj.isInstanceOf[TreeNode] || obj.isInstanceOf[Node]) return true
+    else if (obj.isInstanceOf[List[_]]) {
+      val results = obj.asInstanceOf[List[_]]
+      System.out.print("[")
+      var i = 0
+      while (i < results.size) {
+        val item = results(i)
+        if (item != null) if (item.isInstanceOf[List[_]] || item.isInstanceOf[ListNode] || item.isInstanceOf[TreeNode] || item.isInstanceOf[Node]) return true
+          i += 1
+      }
+    }
+    else if (obj.getClass.isArray) {
+        val className = obj.getClass.getName
+        if (className.startsWith("[[") || className == "[Lcom.learn.scala.leetcode.base.structure.ListNode;") return true
+      }
+    false
   }
 
   /**

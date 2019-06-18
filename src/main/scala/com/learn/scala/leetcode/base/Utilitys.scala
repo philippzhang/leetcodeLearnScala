@@ -204,7 +204,7 @@ object Utilitys {
               }
               l += 1
             }
-            if (enprint) {
+            if (enprint&&PrintObj.judgePrint(outputObj)) {
               try
                 callBack.printOutput(outputObj)
               catch {
@@ -230,6 +230,24 @@ object Utilitys {
               val inputIndex: Int = trueResult.substring(1, 2).toInt
               val trueInputResult: String = trueResult.substring(3).trim
               if (StringUtils.isNotBlank(trueInputResult) && inputIndex >= 0 && inputIndex < inputObjArr.length) try {
+                var enprint: Boolean = true
+                var l: Int = inputObjArr.length
+                while (l < dataList.size) {
+                  if (dataList(l).equals("$disprint")) {
+                    enprint = false
+                  }
+                  l += 1
+                }
+                val inputObj = inputObjArr(inputIndex)
+                if(enprint&&PrintObj.judgePrint(inputObj)){
+                  try
+                    callBack.printInput(inputIndex)
+                  catch {
+                    case e: Exception =>
+                      e.printStackTrace()
+                      testFlag = false
+                  }
+                }
                 val resultFlag: Boolean = callBack.inputVerify(inputObjArr, trueInputResult, outputObj, inputIndex, dataList, tempList)
                 if (!resultFlag) testFlag = false
               } catch {
