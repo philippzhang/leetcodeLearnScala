@@ -158,7 +158,6 @@ object PrintObj {
     if (obj.isInstanceOf[ListNode] || obj.isInstanceOf[TreeNode] || obj.isInstanceOf[Node]) return true
     else if (obj.isInstanceOf[List[_]]) {
       val results = obj.asInstanceOf[List[_]]
-      System.out.print("[")
       var i = 0
       while (i < results.size) {
         val item = results(i)
