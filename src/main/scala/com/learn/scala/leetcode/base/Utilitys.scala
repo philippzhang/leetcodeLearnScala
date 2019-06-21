@@ -62,8 +62,10 @@ object Utilitys {
         for (j <- Range(1, testList.size)) {
           //数据
           val dataList: ListBuffer[String] = testList(j)
-          if (dataList != null && dataList.size > 0) {
-            System.out.println("第" + jCount + "组数据:")
+          if (dataList != null ) {
+            if(dataList.size > 0) {
+              System.out.println("第" + jCount + "组数据:")
+            }
             val resultFlag: Boolean = test(callBack, algorithmClassName, algorithmFuncName, dataList)
             if (!resultFlag) testFlag = false
             System.out.println("-----------------------------")
@@ -109,16 +111,17 @@ object Utilitys {
 
           //临时集合，用于输入和输出之间传递
           val tempList: ListBuffer[_] = new ListBuffer()
-
-          println("输入:")
-          //打印输入参数
-          try
-            callBack.printInput(dataList, paramLength)
-          catch {
-            case e: Exception =>
-              e.printStackTrace()
-              testFlag = false
-              invokeFlag = false
+          if(paramLength>0) {
+            println("输入:")
+            //打印输入参数
+            try
+              callBack.printInput(dataList, paramLength)
+            catch {
+              case e: Exception =>
+                e.printStackTrace()
+                testFlag = false
+                invokeFlag = false
+            }
           }
 
           //如果入参需要重构
