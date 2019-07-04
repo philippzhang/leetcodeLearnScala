@@ -1,8 +1,9 @@
 package com.learn.scala.leetcode.base.utils
 
+
 import com.google.gson.{JsonArray, JsonElement, JsonObject}
 import com.learn.java.leetcode.utils.UtilitysJava
-import com.learn.scala.leetcode.base.structure.{ListNode, Node, TreeNode}
+import com.learn.scala.leetcode.base.structure.{ListNode, NestedInteger, Node, TreeNode}
 
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 import scala.util.control.Breaks
@@ -151,6 +152,8 @@ object Format {
       format(obj.asInstanceOf[TreeNode], stringBuffer)
     } else if (obj.isInstanceOf[Node]) {
       format(obj.asInstanceOf[Node], stringBuffer)
+    } else if (obj.isInstanceOf[NestedInteger]) {
+      format(obj.asInstanceOf[NestedInteger], stringBuffer)
     } else{
       throw new RuntimeException("未定义的类型，转换失败!")
     }
@@ -564,6 +567,24 @@ object Format {
             i += 1
         }
       }
+    }
+  }
+
+
+  private def format(nestedInteger: NestedInteger, stringBuffer: StringBuffer): Unit = {
+    if (nestedInteger.isInteger) stringBuffer.append(nestedInteger.getInteger).append(",")
+    else {
+      stringBuffer.append("[")
+      val list: List[NestedInteger] = nestedInteger.getList
+      if (list != null && list.size > 0) {
+        var i: Int = 0
+        while (i < list.size) {
+          format(list(i), stringBuffer)
+            i += 1
+        }
+      }
+      if (stringBuffer.length > 0 && stringBuffer.charAt(stringBuffer.length - 1) == ',') stringBuffer.deleteCharAt(stringBuffer.length - 1)
+      stringBuffer.append("]")
     }
   }
 

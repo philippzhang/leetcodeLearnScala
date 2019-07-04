@@ -1,7 +1,7 @@
 package com.learn.scala.leetcode.base.utils
 
 import com.google.gson.{JsonArray, JsonElement, JsonObject, JsonParser}
-import com.learn.scala.leetcode.base.structure.{ListNode, Node, TreeNode}
+import com.learn.scala.leetcode.base.structure.{ListNode, NestedInteger, Node, TreeNode}
 
 import scala.Array._
 import scala.collection.mutable.{ListBuffer, Queue}
@@ -565,7 +565,7 @@ object Build {
 
 
   /**
-    * 字符串构建ListBuffer
+    * 字符串构建List
     * 例如[1,2,3]
     *
     * @param data
@@ -619,6 +619,66 @@ object Build {
       else if (arr(i) == null || arr(i).trim.length == 0) list = list :+ (null)
       else if (StringUtil.judgeNumber(arr(i))) list = list :+ (arr(i).toInt)
       else list = list :+ (StringUtil.changeStr(arr(i)))
+      i += 1
+    }
+    list
+  }
+
+
+  /**
+    * 字符串构建List
+    * 例如[1,2,3]
+    *
+    * @param data
+    * @return
+    */
+  def buildNestedIntegerList(data: String): List[NestedInteger] = {
+    if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
+    if (data.equals("[]")) return List()
+    var ret = data.trim
+    //去掉最外层的[]
+    ret = ret.substring(1, ret.length - 1)
+    var splitStr: String = null
+    var arr: Array[String] = null
+    if (ret.indexOf("[") >= 0) {
+      var vList: List[_] = List()
+      var count: Int = 0
+      var stringBuffer: StringBuffer = new StringBuffer
+      var i: Int = 0
+      while (i < ret.length) {
+        val c: Char = ret.charAt(i)
+        stringBuffer.append(c)
+        if (c.equals('[')) count += 1
+        else if (c.equals(']')) count -= 1
+        else if (c.equals(',') && count == 0) {
+          stringBuffer.deleteCharAt(stringBuffer.length - 1)
+          vList = vList :+ (stringBuffer.toString)
+          stringBuffer = new StringBuffer
+        }
+        i += 1
+      }
+      vList = vList :+ (stringBuffer.toString)
+      arr = new Array[String](vList.size)
+      i = 0
+      while (i < vList.size) {
+        arr(i) = vList(i).toString
+        i += 1
+      }
+    } else {
+      splitStr = ","
+      arr = ret.split(splitStr, -1)
+    }
+    var flag: Boolean = false
+    val length: Int = arr.length
+    var list: List[NestedInteger] = List()
+    var i: Int = 0
+    while (i < length) {
+      val newData: String = arr(i)
+      flag = false
+      if (newData.indexOf("[") >= 0) flag = true
+      if (flag) list = list :+ (new NestedInteger(buildNestedIntegerList(newData)))
+      else if (arr(i) == null || arr(i).trim.length == 0) list = list :+ (null)
+      else if (StringUtil.judgeNumber(arr(i))) list = list :+ (new NestedInteger(arr(i).toInt))
       i += 1
     }
     list
