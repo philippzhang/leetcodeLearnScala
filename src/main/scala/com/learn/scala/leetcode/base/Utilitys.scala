@@ -197,6 +197,16 @@ object Utilitys {
           }
           val endTime = System.currentTimeMillis
 
+          val trueResultOutputList: ListBuffer[String] = ListBuffer()
+          var k: Int = paramLength
+          while (k < dataList.size) {
+            var trueResult: String = dataList(k)
+            if (StringUtils.isNotBlank(trueResult)) if (trueResult.startsWith("=")) {
+              trueResult = trueResult.substring(1)
+              if (StringUtils.isNotBlank(trueResult)) trueResultOutputList += (trueResult)
+            }
+            k += 1
+          }
           //格式化打印
           if (!("Unit".equals(returnTypeName))) { //打印输出
             var enprint: Boolean = true
@@ -207,7 +217,7 @@ object Utilitys {
               }
               l += 1
             }
-            if (enprint&&PrintObj.judgePrint(outputObj)) {
+            if (enprint&&(PrintObj.judgePrint(outputObj)||trueResultOutputList.size == 0)) {
               try
                 callBack.printOutput(outputObj)
               catch {
@@ -218,15 +228,17 @@ object Utilitys {
             }
           }
 
-          val trueResultOutputList: ListBuffer[String] = ListBuffer()
-          var k: Int = paramLength
+         // val trueResultOutputList: ListBuffer[String] = ListBuffer()
+          k = paramLength
+
           while (k < dataList.size) {
             var trueResult: String = dataList(k)
-            if (StringUtils.isNotBlank(trueResult)) if (trueResult.startsWith("=")) {
+           /* if (StringUtils.isNotBlank(trueResult)) if (trueResult.startsWith("=")) {
               trueResult = trueResult.substring(1)
               if (StringUtils.isNotBlank(trueResult)) trueResultOutputList += (trueResult)
             }
-            else if (StringUtil.judgeINumber(trueResult)) {
+            else*/
+            if (StringUtil.judgeINumber(trueResult)) {
               /**
                 * 验证输入参数
                 */

@@ -2,7 +2,6 @@ package com.learn.scala.leetcode.base.utils
 
 import com.google.gson.{JsonArray, JsonElement, JsonObject}
 import com.learn.java.leetcode.utils.UtilitysJava
-import com.learn.scala.leetcode.base.Utilitys
 import com.learn.scala.leetcode.base.structure.{ListNode, Node, TreeNode}
 
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
@@ -18,6 +17,7 @@ object Format {
   def format(obj: Any): String = {
     val stringBuffer = new StringBuffer
     format(obj, stringBuffer)
+    if (stringBuffer.length > 0 && stringBuffer.charAt(stringBuffer.length - 1) == ',') stringBuffer.deleteCharAt(stringBuffer.length - 1)
     val testInputResult = stringBuffer.toString
     testInputResult
   }
