@@ -117,7 +117,7 @@ object Build {
     val results = new Array[Char](length)
     var i = 0
     while (i < length) {
-      results(i) = StringUtil.changeStr(arr(i)).charAt(0)
+      results(i) = StringUtil.changeStr(arr(i).trim).charAt(0)
       i += 1
     }
     results
@@ -157,7 +157,7 @@ object Build {
       val arr2 = arr(i).split(",", -1)
       var j = 0
       while (j < cow) {
-        results(i)(j) = arr2(j).toInt
+        results(i)(j) = arr2(j).trim.toInt
         j += 1
       }
       i += 1
@@ -182,7 +182,7 @@ object Build {
       val arr2 = arr(i).split(",", -1)
       var j = 0
       while (j < cow) {
-        results(i)(j) = arr2(j).toBoolean
+        results(i)(j) = arr2(j).trim.toBoolean
         j += 1
       }
       i += 1
@@ -206,7 +206,7 @@ object Build {
       val arr2 = arr(i).split(",", -1)
       var j = 0
       while (j < cow) {
-        results(i)(j) = arr2(j).toDouble
+        results(i)(j) = arr2(j).trim.toDouble
         j += 1
       }
       i += 1
@@ -230,7 +230,7 @@ object Build {
       val arr2 = arr(i).split(",", -1)
       var j = 0
       while (j < cow) {
-        results(i)(j) = arr2(j).toFloat
+        results(i)(j) = arr2(j).trim.toFloat
         j += 1
       }
       i += 1
@@ -262,7 +262,7 @@ object Build {
       val arr2 = arr(i).split(",", -1)
       var j = 0
       while (j < cow) {
-        results(i)(j) = StringUtil.changeStr(arr2(j)).charAt(0)
+        results(i)(j) = StringUtil.changeStr(arr2(j).trim).charAt(0)
         j += 1
       }
       i += 1
@@ -294,7 +294,7 @@ object Build {
       val arr2 = arr(i).split(",", -1)
       var j = 0
       while (j < cow) {
-        results(i)(j) = StringUtil.changeStr(arr2(j))
+        results(i)(j) = StringUtil.changeStr(arr2(j).trim)
         j += 1
       }
       i += 1
@@ -321,7 +321,7 @@ object Build {
     val results = new Array[String](length)
     var i = 0
     while (i < length) {
-      results(i) = StringUtil.changeStr(arr(i))
+      results(i) = StringUtil.changeStr(arr(i).trim)
       i += 1
     }
     results
@@ -354,7 +354,7 @@ object Build {
     listNode(0) = new ListNode(split(0).toInt)
     var i = 1
     while (i < len) {
-      listNode(i) = new ListNode(split(i).toInt)
+      listNode(i) = new ListNode(split(i).trim.toInt)
       listNode(i - 1).next = listNode(i)
       i += 1
     }
@@ -390,7 +390,7 @@ object Build {
     val results = new Array[ListNode](row)
     var i = 0
     while (i < row) {
-      val listNode = buildListNode("[" + arr(i) + "]")
+      val listNode = buildListNode("[" + arr(i).trim + "]")
       results(i) = listNode
       i += 1
     }
@@ -427,12 +427,12 @@ object Build {
     var i = 1
     while (!queue.isEmpty && i < partTree.length) {
       val node = queue.dequeue()
-      if (i < partTree.length && partTree(i) != null && !(partTree(i).equals("null"))) {
-        node.left = new TreeNode(partTree(i).toInt)
+      if (i < partTree.length && partTree(i) != null && !(partTree(i).trim.equals("null"))) {
+        node.left = new TreeNode(partTree(i).trim.toInt)
         queue.enqueue(node.left)
       }
-      if (i + 1 < partTree.length && partTree(i + 1) != null && !(partTree(i + 1).equals("null"))) {
-        node.right = new TreeNode(partTree(i + 1).toInt)
+      if (i + 1 < partTree.length && partTree(i + 1) != null && !(partTree(i + 1).trim.equals("null"))) {
+        node.right = new TreeNode(partTree(i + 1).trim.toInt)
         queue.enqueue(node.right)
       }
       i += 2
@@ -550,13 +550,16 @@ object Build {
     val list: ListBuffer[Any] = ListBuffer()
     var i: Int = 0
     while (i < length) {
-      val newData: String = arr(i)
+      var newData: String = arr(i)
+      if(newData!=null){
+        newData = newData.trim
+      }
       flag = false
       if (newData.indexOf("[") >= 0) flag = true
       if (flag) list += (buildListBuffer(newData))
-      else if (arr(i) == null || arr(i).trim.length == 0) list += (null)
-      else if (StringUtil.judgeNumber(arr(i))) list += (arr(i).toInt)
-      else list += (StringUtil.changeStr(arr(i)))
+      else if (newData == null || newData.length == 0) list += (null)
+      else if (StringUtil.judgeNumber(newData)) list += (newData.toInt)
+      else list += (StringUtil.changeStr(newData))
       i += 1
     }
     list
@@ -612,13 +615,16 @@ object Build {
     var list: List[Any] = List()
     var i: Int = 0
     while (i < length) {
-      val newData: String = arr(i)
+      var newData: String = arr(i)
+      if(newData!=null){
+        newData = newData.trim();
+      }
       flag = false
       if (newData.indexOf("[") >= 0) flag = true
       if (flag) list = list :+ (buildList(newData))
-      else if (arr(i) == null || arr(i).trim.length == 0) list = list :+ (null)
-      else if (StringUtil.judgeNumber(arr(i))) list = list :+ (arr(i).toInt)
-      else list = list :+ (StringUtil.changeStr(arr(i)))
+      else if (newData == null || newData.length == 0) list = list :+ (null)
+      else if (StringUtil.judgeNumber(newData)) list = list :+ (newData.toInt)
+      else list = list :+ (StringUtil.changeStr(newData))
       i += 1
     }
     list
@@ -673,12 +679,15 @@ object Build {
     var list: List[NestedInteger] = List()
     var i: Int = 0
     while (i < length) {
-      val newData: String = arr(i)
+      var newData: String = arr(i)
+      if(newData!=null){
+        newData = newData.trim
+      }
       flag = false
       if (newData.indexOf("[") >= 0) flag = true
       if (flag) list = list :+ (new NestedInteger(buildNestedIntegerList(newData)))
-      else if (arr(i) == null || arr(i).trim.length == 0) list = list :+ (null)
-      else if (StringUtil.judgeNumber(arr(i))) list = list :+ (new NestedInteger(arr(i).toInt))
+      else if (newData == null || newData.length == 0) list = list :+ (null)
+      else if (StringUtil.judgeNumber(newData)) list = list :+ (new NestedInteger(newData.toInt))
       i += 1
     }
     list
