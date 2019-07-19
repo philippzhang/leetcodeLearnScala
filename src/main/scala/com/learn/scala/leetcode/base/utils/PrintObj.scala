@@ -148,6 +148,8 @@ object PrintObj {
       printObj(obj.asInstanceOf[TreeNode])
     } else if (obj.isInstanceOf[Node]) {
       printObj(obj.asInstanceOf[Node]);
+    } else if (obj.isInstanceOf[Map[_, _]]) {
+      printObj(obj.asInstanceOf[Map[_, _]]);
     } else {
       throw new RuntimeException("未定义的类型，打印失败!")
     }
@@ -666,6 +668,10 @@ object PrintObj {
       i += 1
     }
     println()
+  }
+
+  private def printObj(map: Map[_, _]): Unit = {
+    println(StringUtil.map2String(map))
   }
 
 }

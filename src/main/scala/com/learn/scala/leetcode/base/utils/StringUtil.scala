@@ -50,4 +50,23 @@ object StringUtil {
   def IsEqual(a: Double, b: Double): Boolean = Math.abs(a - b) < 0.000001
 
   def IsEqual(a: Float, b: Float): Boolean = Math.abs(a - b) < 0.000001
+
+  def map2String(map: Map[_, _]): String = {
+    val sb = new StringBuilder
+    sb.append('{')
+    val iter = map.iterator
+    while (iter.hasNext) {
+      val entry = iter.next
+      val key = entry._1
+      val value = entry._2
+      if (key.isInstanceOf[Number]) sb.append(key.toString)
+      else sb.append('"').append(key.toString).append('"')
+      sb.append('=')
+      if (value.isInstanceOf[Number]) sb.append(value.toString)
+      else sb.append('"').append(value.toString).append('"')
+      if (iter.hasNext) sb.append(',')
+    }
+    sb.append('}')
+    sb.toString
+  }
 }
