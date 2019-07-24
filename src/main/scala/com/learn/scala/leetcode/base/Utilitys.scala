@@ -483,10 +483,11 @@ object Utilitys {
                       else if (parameterName.equals("[Lcom.learn.scala.leetcode.base.structure.ListNode;") && data.isInstanceOf[ListBuffer[_]]) {
                         val listNode = Build.buildListNodeArray(data.asInstanceOf[ListBuffer[_]])
                         inputObjArr(k) = listNode
-                      }
-                      else { //可能有未处理的类型
+                      } else if (parameterName.equals( "scala.collection.Iterator") && data.isInstanceOf[ListBuffer[_]]){
+                        val iter: Iterator[_] = (data.asInstanceOf[ListBuffer[_]]).iterator
+                        inputObjArr(k) = iter
+                      }else { //可能有未处理的类型
                         flag = false
-
                       }
                       k += 1
 
@@ -509,6 +510,7 @@ object Utilitys {
               }
               j += 1
             }
+            if (obj == null) throw new RuntimeException("无有效的构造方法，初始化失败!")
           } catch {
             case e: InstantiationException =>
               e.printStackTrace()
@@ -524,9 +526,10 @@ object Utilitys {
         } else {
           val methods = algorithmClass.getDeclaredMethods
           var k = 0
+          var flagMethod = false
           while (k < methods.length) {
             val method = methods(k)
-            if (funcName == method.getName) {
+            if (funcName == method.getName && !flagMethod ) {
               val parameterTypes = method.getParameterTypes
               val paramLength = parameterTypes.length
               val inputObjArr = new Array[Any](paramLength)
@@ -582,6 +585,8 @@ object Utilitys {
                 else if (parameterName == "[Lcom.learn.scala.leetcode.base.structure.ListNode;" && data.isInstanceOf[ListBuffer[_]]) {
                   val listNode = Build.buildListNodeArray(data.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = listNode
+                } else {
+                  throw new RuntimeException("未定义的参数类型，初始化失败!")
                 }
                 j += 1
               }
@@ -602,6 +607,7 @@ object Utilitys {
                   outputObj = method.invoke(obj, inputObjArr(0).asInstanceOf[Object], inputObjArr(1).asInstanceOf[Object], inputObjArr(2).asInstanceOf[Object], inputObjArr(3).asInstanceOf[Object], inputObjArr(4).asInstanceOf[Object])
                 }
 
+
                 retList += (outputObj)
               } catch {
                 case e: IllegalAccessException =>
@@ -609,6 +615,8 @@ object Utilitys {
                 case e: InvocationTargetException =>
                   e.printStackTrace()
               }
+              flagMethod = true
+
             }
             k += 1
           }
