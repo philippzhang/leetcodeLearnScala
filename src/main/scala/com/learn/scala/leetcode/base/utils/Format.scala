@@ -105,6 +105,35 @@ object Format {
         }
         else if (item.isInstanceOf[ListBuffer[_]]) {
             format(item, stringBuffer)
+        }else if (item != null && item.getClass.isArray) {
+          val className: String = item.getClass().getName();
+          if (className.equals("[I")) {
+            format(item.asInstanceOf[Array[Int]], stringBuffer)
+          } else if (className.equals("[[I")) {
+            format(item.asInstanceOf[Array[Array[Int]]], stringBuffer);
+          } else if (className.equals("[D")) {
+            format(item.asInstanceOf[Array[Double]], stringBuffer)
+          } else if (className.equals("[[D")) {
+            format(item.asInstanceOf[Array[Array[Double]]], stringBuffer);
+          } else if (className.equals("[F")) {
+            format(item.asInstanceOf[Array[Float]], stringBuffer)
+          } else if (className.equals("[[F")) {
+            format(item.asInstanceOf[Array[Array[Float]]], stringBuffer);
+          } else if (className.equals("[B")) {
+            format(item.asInstanceOf[Array[Boolean]], stringBuffer)
+          } else if (className.equals("[[B")) {
+            format(item.asInstanceOf[Array[Array[Boolean]]], stringBuffer);
+          } else if (className.equals("[C")) {
+            format(item.asInstanceOf[Array[Char]], stringBuffer);
+          } else if (className.equals("[[C")) {
+            format(item.asInstanceOf[Array[Array[Char]]], stringBuffer);
+          } else if (className.equals("[Ljava.lang.String;")) {
+            format(item.asInstanceOf[Array[String]], stringBuffer);
+          } else if (className.equals("[[Ljava.lang.String;")) {
+            format(item.asInstanceOf[Array[Array[String]]], stringBuffer);
+          } else {
+            format(item.asInstanceOf[Array[Any]], stringBuffer)
+          }
         }else if (item != null) {
           throw new RuntimeException("未定义的ListBuffer泛型，转换失败!")
         }
