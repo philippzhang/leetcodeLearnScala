@@ -231,13 +231,10 @@ object Utilitys {
          // val trueResultOutputList: ListBuffer[String] = ListBuffer()
           k = paramLength
 
-          while (k < dataList.size) {
+          var fi = true
+
+          while (fi&&k < dataList.size) {
             var trueResult: String = dataList(k)
-           /* if (StringUtils.isNotBlank(trueResult)) if (trueResult.startsWith("=")) {
-              trueResult = trueResult.substring(1)
-              if (StringUtils.isNotBlank(trueResult)) trueResultOutputList += (trueResult)
-            }
-            else*/
             if (StringUtil.judgeINumber(trueResult)) {
               /**
                 * 验证输入参数
@@ -264,7 +261,13 @@ object Utilitys {
                   }
                 }
                 val resultFlag: Boolean = callBack.inputVerify(inputObjArr, trueInputResult, outputObj, inputIndex, dataList, tempList)
-                if (!resultFlag) testFlag = false
+                if (!resultFlag) {
+                  testFlag = false
+                }else{
+                  //支持多个答案
+                  testFlag = true
+                  fi = false
+                }
               } catch {
                 case e: Exception =>
                   e.printStackTrace()
