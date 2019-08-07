@@ -2,13 +2,10 @@ package com.learn.scala.leetcode.base
 
 import java.io.{File, IOException}
 import java.lang.reflect.{Constructor, InvocationTargetException, Method}
-import java.util
 
-import com.google.gson.{JsonArray, JsonElement, JsonParser}
 import com.learn.scala.leetcode.base.utils.{Build, NoImplException, PrintObj, StringUtil}
 import org.apache.commons.lang.StringUtils
 
-import scala.collection.immutable.TreeMap
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 import scala.util.control.Breaks
@@ -62,8 +59,8 @@ object Utilitys {
         for (j <- Range(1, testList.size)) {
           //数据
           val dataList: ListBuffer[String] = testList(j)
-          if (dataList != null ) {
-            if(dataList.size > 0) {
+          if (dataList != null) {
+            if (dataList.size > 0) {
               System.out.println("第" + jCount + "组数据:")
             }
             val resultFlag: Boolean = test(callBack, algorithmClassName, algorithmFuncName, dataList)
@@ -111,7 +108,7 @@ object Utilitys {
 
           //临时集合，用于输入和输出之间传递
           val tempList: ListBuffer[_] = new ListBuffer()
-          if(paramLength>0) {
+          if (paramLength > 0) {
             println("输入:")
             //打印输入参数
             try
@@ -217,7 +214,7 @@ object Utilitys {
               }
               l += 1
             }
-            if (enprint&&(PrintObj.judgePrint(outputObj)||trueResultOutputList.size == 0)) {
+            if (enprint && (PrintObj.judgePrint(outputObj) || trueResultOutputList.size == 0)) {
               try
                 callBack.printOutput(outputObj)
               catch {
@@ -228,12 +225,12 @@ object Utilitys {
             }
           }
 
-         // val trueResultOutputList: ListBuffer[String] = ListBuffer()
+          // val trueResultOutputList: ListBuffer[String] = ListBuffer()
           k = paramLength
 
           var fi = true
 
-          while (fi&&k < dataList.size) {
+          while (fi && k < dataList.size) {
             var trueResult: String = dataList(k)
             if (StringUtil.judgeINumber(trueResult)) {
               /**
@@ -251,7 +248,7 @@ object Utilitys {
                   l += 1
                 }
                 val inputObj = inputObjArr(inputIndex)
-                if(enprint&&PrintObj.judgePrint(inputObj)){
+                if (enprint && PrintObj.judgePrint(inputObj)) {
                   try
                     callBack.printInput(inputIndex)
                   catch {
@@ -263,7 +260,7 @@ object Utilitys {
                 val resultFlag: Boolean = callBack.inputVerify(inputObjArr, trueInputResult, outputObj, inputIndex, dataList, tempList)
                 if (!resultFlag) {
                   testFlag = false
-                }else{
+                } else {
                   //支持多个答案
                   testFlag = true
                   fi = false
@@ -439,85 +436,103 @@ object Utilitys {
                   val inputObjArr = new Array[Any](params.size)
                   var k: Int = 0
 
-                    while (k < params.size) {
-                      val parameterName: String = c.getParameterTypes()(k).getName
-                      val data = params(k)
-                      if (parameterName.equals("int") && data.isInstanceOf[Int]) {
-                        inputObjArr(k) = data.toString.toInt
-                      }
-                      else if (parameterName.equals("long") && data.isInstanceOf[Long]) {
-                        inputObjArr(k) = data.toString.toLong
-                      }
-                      else if (parameterName.equals("double") && data.isInstanceOf[Double]) {
-                        inputObjArr(k) = data.toString.toDouble
-                      }
-                      else if (parameterName.equals("float") && data.isInstanceOf[Float]) {
-                        inputObjArr(k) = data.toString.toFloat
-                      }
-                      else if (parameterName.equals("boolean") && data.isInstanceOf[Boolean]) {
-                        inputObjArr(k) = data.toString.toBoolean
-                      } else if (parameterName.equals("java.lang.String") && data.isInstanceOf[String]) {
-                        inputObjArr(k) = StringUtil.changeStr(data.toString)
-                      }
-                      else if (parameterName.equals("[I") && data.isInstanceOf[ListBuffer[_]]) {
-                        val array = Build.buildArray(data.toString.asInstanceOf[ListBuffer[_]])
-                        inputObjArr(k) = array
-                      }
-                      else if (parameterName.equals("[[I")&& data.isInstanceOf[ListBuffer[_]]) {
-                        val matrix = Build.buildMatrix(data.toString.asInstanceOf[ListBuffer[_]])
-                        inputObjArr(k) = matrix
-                      }
-                      else if (parameterName.equals("[C") && data.isInstanceOf[ListBuffer[_]]) {
-                        val array = Build.buildArrayChar(data.toString.asInstanceOf[ListBuffer[_]])
-                        inputObjArr(k) = array
-                      }
-                      else if (parameterName.equals("[[C") && data.isInstanceOf[ListBuffer[_]]) {
-                        val matrix = Build.buildMatrixChar(data.toString.asInstanceOf[ListBuffer[_]])
-                        inputObjArr(k) = matrix
-                      }
-                      else if (parameterName.equals("[Ljava.lang.String;") && data.isInstanceOf[ListBuffer[_]]) {
-                        val array = Build.buildArrayString(data.toString.asInstanceOf[ListBuffer[_]])
-                        inputObjArr(k) = array
-                      }
-                      else if (parameterName.equals("[[Ljava.lang.String;") && data.isInstanceOf[ListBuffer[_]]) {
-                        val matrix = Build.buildMatrixString(data.toString.asInstanceOf[ListBuffer[_]])
-                        inputObjArr(k) = matrix
-                      }
-                      else if (parameterName.equals("scala.collection.mutable.ListBuffer") && data.isInstanceOf[ListBuffer[_]]) {
-                        val list = data.asInstanceOf[ListBuffer[_]]
-                        inputObjArr(k) = list
-                      }
-                      else if (parameterName.equals("com.learn.scala.leetcode.base.structure.TreeNode") && data.isInstanceOf[ListBuffer[_]]) {
-                        val treeNode = Build.buildBinaryTree(data.asInstanceOf[ListBuffer[_]])
-                        inputObjArr(k) = treeNode
-                      }
-                      else if (parameterName.equals("com.learn.scala.leetcode.base.structure.ListNode") && data.isInstanceOf[ListBuffer[_]]) {
-                        val listNode = Build.buildListNode(data.asInstanceOf[ListBuffer[_]])
-                        inputObjArr(k) = listNode
-                      }
-                      else if (parameterName.equals("[Lcom.learn.scala.leetcode.base.structure.ListNode;") && data.isInstanceOf[ListBuffer[_]]) {
-                        val listNode = Build.buildListNodeArray(data.asInstanceOf[ListBuffer[_]])
-                        inputObjArr(k) = listNode
-                      } else if (parameterName.equals( "scala.collection.Iterator") && data.isInstanceOf[ListBuffer[_]]){
-                        val iter: Iterator[_] = (data.asInstanceOf[ListBuffer[_]]).iterator
-                        inputObjArr(k) = iter
-                      }else { //可能有未处理的类型
-                        flag = false
-                      }
-                      k += 1
+                  while (k < params.size) {
+                    val parameterName: String = c.getParameterTypes()(k).getName
+                    val data = params(k)
+                    if (parameterName.equals("int") && data.isInstanceOf[Int]) {
+                      inputObjArr(k) = data.toString.toInt
+                    }
+                    else if (parameterName.equals("long") && data.isInstanceOf[Long]) {
+                      inputObjArr(k) = data.toString.toLong
+                    }
+                    else if (parameterName.equals("double") && data.isInstanceOf[Double]) {
+                      inputObjArr(k) = data.toString.toDouble
+                    }
+                    else if (parameterName.equals("float") && data.isInstanceOf[Float]) {
+                      inputObjArr(k) = data.toString.toFloat
+                    }
+                    else if (parameterName.equals("boolean") && data.isInstanceOf[Boolean]) {
+                      inputObjArr(k) = data.toString.toBoolean
+                    } else if (parameterName.equals("java.lang.String") && data.isInstanceOf[String]) {
+                      inputObjArr(k) = StringUtil.changeStr(data.toString)
+                    }
+                    else if (parameterName.equals("[I") && data.isInstanceOf[ListBuffer[_]]) {
+                      val array = Build.buildArray(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = array
+                    }
+                    else if (parameterName.equals("[[I") && data.isInstanceOf[ListBuffer[_]]) {
+                      val matrix = Build.buildMatrix(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = matrix
+                    } else if (parameterName.equals("[B") && data.isInstanceOf[ListBuffer[_]]) {
+                      val array = Build.buildArrayBoolean(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = array
+                    } else if (parameterName.equals("[[B") && data.isInstanceOf[ListBuffer[_]]) {
+                      val matrix: Array[Array[Boolean]] = Build.buildMatrixBoolean(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = matrix
+                    } else if (parameterName.equals("[D") && data.isInstanceOf[ListBuffer[_]]) {
+                      val array = Build.buildArrayDouble(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = array
+                    } else if (parameterName.equals("[[D") && data.isInstanceOf[ListBuffer[_]]) {
+                      val matrix: Array[Array[Double]] = Build.buildMatrixDouble(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = matrix
+                    } else if (parameterName.equals("[F") && data.isInstanceOf[ListBuffer[_]]) {
+                      val array = Build.buildArrayFloat(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = array
+                    } else if (parameterName.equals("[[F") && data.isInstanceOf[ListBuffer[_]]) {
+                      val matrix: Array[Array[Float]] = Build.buildMatrixFloat(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = matrix
+                    }
+                    else if (parameterName.equals("[C") && data.isInstanceOf[ListBuffer[_]]) {
+                      val array = Build.buildArrayChar(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = array
+                    }
+                    else if (parameterName.equals("[[C") && data.isInstanceOf[ListBuffer[_]]) {
+                      val matrix = Build.buildMatrixChar(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = matrix
+                    }
+                    else if (parameterName.equals("[Ljava.lang.String;") && data.isInstanceOf[ListBuffer[_]]) {
+                      val array = Build.buildArrayString(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = array
+                    }
+                    else if (parameterName.equals("[[Ljava.lang.String;") && data.isInstanceOf[ListBuffer[_]]) {
+                      val matrix = Build.buildMatrixString(data.toString.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = matrix
+                    }
+                    else if (parameterName.equals("scala.collection.mutable.ListBuffer") && data.isInstanceOf[ListBuffer[_]]) {
+                      val list = data.asInstanceOf[ListBuffer[_]]
+                      inputObjArr(k) = list
+                    }
+                    else if (parameterName.equals("com.learn.scala.leetcode.base.structure.TreeNode") && data.isInstanceOf[ListBuffer[_]]) {
+                      val treeNode = Build.buildBinaryTree(data.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = treeNode
+                    }
+                    else if (parameterName.equals("com.learn.scala.leetcode.base.structure.ListNode") && data.isInstanceOf[ListBuffer[_]]) {
+                      val listNode = Build.buildListNode(data.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = listNode
+                    }
+                    else if (parameterName.equals("[Lcom.learn.scala.leetcode.base.structure.ListNode;") && data.isInstanceOf[ListBuffer[_]]) {
+                      val listNode = Build.buildListNodeArray(data.asInstanceOf[ListBuffer[_]])
+                      inputObjArr(k) = listNode
+                    } else if (parameterName.equals("scala.collection.Iterator") && data.isInstanceOf[ListBuffer[_]]) {
+                      val iter: Iterator[_] = (data.asInstanceOf[ListBuffer[_]]).iterator
+                      inputObjArr(k) = iter
+                    } else { //可能有未处理的类型
+                      flag = false
+                    }
+                    k += 1
 
                   }
                   if (flag) {
-                    if(inputObjArr.length==1){
+                    if (inputObjArr.length == 1) {
                       obj = c.newInstance(inputObjArr(0).asInstanceOf[Object])
-                    }else if(inputObjArr.length==2){
-                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object])
-                    }else if(inputObjArr.length==3){
-                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object],inputObjArr(2).asInstanceOf[Object])
-                    }else if(inputObjArr.length==4){
-                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object],inputObjArr(2).asInstanceOf[Object],inputObjArr(3).asInstanceOf[Object])
-                    }else if(inputObjArr.length==5){
-                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object],inputObjArr(1).asInstanceOf[Object],inputObjArr(2).asInstanceOf[Object],inputObjArr(3).asInstanceOf[Object],inputObjArr(4).asInstanceOf[Object])
+                    } else if (inputObjArr.length == 2) {
+                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object], inputObjArr(1).asInstanceOf[Object])
+                    } else if (inputObjArr.length == 3) {
+                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object], inputObjArr(1).asInstanceOf[Object], inputObjArr(2).asInstanceOf[Object])
+                    } else if (inputObjArr.length == 4) {
+                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object], inputObjArr(1).asInstanceOf[Object], inputObjArr(2).asInstanceOf[Object], inputObjArr(3).asInstanceOf[Object])
+                    } else if (inputObjArr.length == 5) {
+                      obj = c.newInstance(inputObjArr(0).asInstanceOf[Object], inputObjArr(1).asInstanceOf[Object], inputObjArr(2).asInstanceOf[Object], inputObjArr(3).asInstanceOf[Object], inputObjArr(4).asInstanceOf[Object])
                     }
 
                   }
@@ -544,7 +559,7 @@ object Utilitys {
           var flagMethod = false
           while (k < methods.length) {
             val method = methods(k)
-            if (funcName == method.getName && !flagMethod ) {
+            if (funcName == method.getName && !flagMethod) {
               val parameterTypes = method.getParameterTypes
               val paramLength = parameterTypes.length
               val inputObjArr = new Array[Any](paramLength)
@@ -569,23 +584,39 @@ object Utilitys {
                 } else if (parameterName.equals("java.lang.String")) {
                   inputObjArr(j) = StringUtil.changeStr(data.toString)
                 }
-                else if (parameterName.equals("[I")&& data.isInstanceOf[ListBuffer[_]]) {
+                else if (parameterName.equals("[I") && data.isInstanceOf[ListBuffer[_]]) {
                   val array = Build.buildArray(data.toString.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = array
                 }
-                else if (parameterName.equals("[[I")&& data.isInstanceOf[ListBuffer[_]]) {
+                else if (parameterName.equals("[[I") && data.isInstanceOf[ListBuffer[_]]) {
                   val matrix = Build.buildMatrix(data.toString.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = matrix
-                }
-                else if (parameterName.equals("[C")&& data.isInstanceOf[ListBuffer[_]]) {
+                } else if (parameterName.equals("[B") && data.isInstanceOf[ListBuffer[_]]) {
+                  val array = Build.buildArrayBoolean(data.toString.asInstanceOf[ListBuffer[_]])
+                  inputObjArr(j) = array
+                } else if (parameterName.equals("[[B") && data.isInstanceOf[ListBuffer[_]]) {
+                  val matrix: Array[Array[Boolean]] = Build.buildMatrixBoolean(data.toString.asInstanceOf[ListBuffer[_]])
+                  inputObjArr(j) = matrix
+                } else if (parameterName.equals("[D") && data.isInstanceOf[ListBuffer[_]]) {
+                  val array = Build.buildArrayDouble(data.toString.asInstanceOf[ListBuffer[_]])
+                  inputObjArr(j) = array
+                } else if (parameterName.equals("[[D") && data.isInstanceOf[ListBuffer[_]]) {
+                  val matrix: Array[Array[Double]] = Build.buildMatrixDouble(data.toString.asInstanceOf[ListBuffer[_]])
+                  inputObjArr(j) = matrix
+                } else if (parameterName.equals("[F") && data.isInstanceOf[ListBuffer[_]]) {
+                  val array = Build.buildArrayFloat(data.toString.asInstanceOf[ListBuffer[_]])
+                  inputObjArr(j) = array
+                } else if (parameterName.equals("[[F") && data.isInstanceOf[ListBuffer[_]]) {
+                  val matrix: Array[Array[Float]] = Build.buildMatrixFloat(data.toString.asInstanceOf[ListBuffer[_]])
+                  inputObjArr(j) = matrix
+                } else if (parameterName.equals("[C") && data.isInstanceOf[ListBuffer[_]]) {
                   val array = Build.buildArrayChar(data.toString.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = array
-                }
-                else if (parameterName.equals("[[C") && data.isInstanceOf[ListBuffer[_]]) {
+                } else if (parameterName.equals("[[C") && data.isInstanceOf[ListBuffer[_]]) {
                   val matrix = Build.buildMatrixChar(data.toString.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = matrix
                 }
-                else if (parameterName.equals("[Ljava.lang.String;")&& data.isInstanceOf[ListBuffer[_]]) {
+                else if (parameterName.equals("[Ljava.lang.String;") && data.isInstanceOf[ListBuffer[_]]) {
                   val array = Build.buildArrayString(data.toString.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = array
                 }
@@ -656,14 +687,15 @@ object Utilitys {
     if (list1.size != list2.size) return false
     val listNew1: List[T] = sortList(list1).asInstanceOf[List[T]]
     val listNew2: List[T] = sortList(list2).asInstanceOf[List[T]]
-    val set1: Set[T] =  listNew1.toSet
-    val set2: Set[T] =  listNew2.toSet
+    val set1: Set[T] = listNew1.toSet
+    val set2: Set[T] = listNew2.toSet
     set1.equals(set2)
   }
 
 
   /**
     * 排序List,返回一个新的List
+    *
     * @param list
     * @return
     */
@@ -676,22 +708,22 @@ object Utilitys {
         while (i < list.size) {
           val list1 = list(i).asInstanceOf[List[_]]
           retList = retList :+ sortList(list1)
-            i += 1
+          i += 1
         }
         return retList
       }
       else if (o.isInstanceOf[String]) {
-        return list.asInstanceOf[List[String]].sortWith(_<_)
-      }else if (o.isInstanceOf[Int]) {
-        return list.asInstanceOf[List[Int]].sortWith(_<_)
-      }else if (o.isInstanceOf[Long]) {
-        return list.asInstanceOf[List[Long]].sortWith(_<_)
-      }else if (o.isInstanceOf[Float]) {
-        return list.asInstanceOf[List[Float]].sortWith(_<_)
-      }else if (o.isInstanceOf[Double]) {
-        return list.asInstanceOf[List[Double]].sortWith(_<_)
-      }else if (o.isInstanceOf[Boolean]) {
-        return list.asInstanceOf[List[Boolean]].sortWith(_<_)
+        return list.asInstanceOf[List[String]].sortWith(_ < _)
+      } else if (o.isInstanceOf[Int]) {
+        return list.asInstanceOf[List[Int]].sortWith(_ < _)
+      } else if (o.isInstanceOf[Long]) {
+        return list.asInstanceOf[List[Long]].sortWith(_ < _)
+      } else if (o.isInstanceOf[Float]) {
+        return list.asInstanceOf[List[Float]].sortWith(_ < _)
+      } else if (o.isInstanceOf[Double]) {
+        return list.asInstanceOf[List[Double]].sortWith(_ < _)
+      } else if (o.isInstanceOf[Boolean]) {
+        return list.asInstanceOf[List[Boolean]].sortWith(_ < _)
       }
     }
     return null
@@ -705,7 +737,7 @@ object Utilitys {
     var i = 0
     while (i < array1.length) {
       if (array1(i) != array2(i)) return false
-        i += 1
+      i += 1
     }
     true
   }
@@ -717,7 +749,7 @@ object Utilitys {
     var i = 0
     while (i < array1.length) {
       if (array1(i) == array2(i)) return false
-        i += 1
+      i += 1
     }
     true
   }
@@ -729,7 +761,7 @@ object Utilitys {
     var i = 0
     while (i < array1.length) {
       if (array1(i) != array2(i)) return false
-        i += 1
+      i += 1
     }
     true
   }
@@ -743,24 +775,24 @@ object Utilitys {
       var j = 0
       while (j < m1(i).length) {
         if (m1(i)(j) != m2(i)(j)) return false
-          j += 1
+        j += 1
       }
-        i += 1
+      i += 1
     }
     true
   }
 
 
   def main(args: Array[String]): Unit = {
-    var l1 = List(List(1,2),List(3,5,1))
+    var l1 = List(List(1, 2), List(3, 5, 1))
 
-    var l2 = List(List(3,1,5),List(2,1))
+    var l2 = List(List(3, 1, 5), List(2, 1))
 
-    var b = compareListsIgnoreOrder(l1,l2);
+    var b = compareListsIgnoreOrder(l1, l2);
 
     PrintObj.printObj(b);
 
-    PrintObj.printObj(l1==l2);
+    PrintObj.printObj(l1 == l2);
 
   }
 }

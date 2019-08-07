@@ -44,6 +44,8 @@ object Build {
   }
 
 
+
+
   def buildArrayBoolean(data: String): Array[Boolean] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
     var ret = data.trim
@@ -57,6 +59,17 @@ object Build {
     var i = 0
     while (i < length) {
       results(i) = arr(i).trim.toBoolean
+      i += 1
+    }
+    results
+  }
+
+  def buildArrayBoolean(list: ListBuffer[_]): Array[Boolean] = {
+    if (list == null || list.size == 0) return null
+    val results = new Array[Boolean](list.size)
+    var i = 0
+    while (i < list.size) {
+      results(i) = list(i).toString.toBoolean
       i += 1
     }
     results
@@ -80,6 +93,17 @@ object Build {
     results
   }
 
+  def buildArrayDouble(list: ListBuffer[_]): Array[Double] = {
+    if (list == null || list.size == 0) return null
+    val results = new Array[Double](list.size)
+    var i = 0
+    while (i < list.size) {
+      results(i) = list(i).toString.toDouble
+      i += 1
+    }
+    results
+  }
+
   def buildArrayFloat(data: String): Array[Float] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
     var ret = data.trim
@@ -93,6 +117,17 @@ object Build {
     var i = 0
     while (i < length) {
       results(i) = arr(i).trim.toFloat
+      i += 1
+    }
+    results
+  }
+
+  def buildArrayFloat(list: ListBuffer[_]): Array[Float] = {
+    if (list == null || list.size == 0) return null
+    val results = new Array[Float](list.size)
+    var i = 0
+    while (i < list.size) {
+      results(i) = list(i).toString.toFloat
       i += 1
     }
     results
@@ -212,6 +247,28 @@ object Build {
     results
   }
 
+
+  def buildMatrixBoolean(list: ListBuffer[_]): Array[Array[Boolean]] = {
+    if (list==null) return null
+    if (list.size == 0) return ofDim[Boolean](0,0)
+    if (list(0) == null || !list(0).isInstanceOf[ListBuffer[_]] || list(0).asInstanceOf[ListBuffer[_]].size == 0) return ofDim[Boolean](0,0)
+
+    val row = list.size
+    val cow = list(0).asInstanceOf[ListBuffer[_]].size
+    val results = ofDim[Boolean](row, cow)
+    var i = 0
+    while (i < row) {
+      val childList = list(i).asInstanceOf[ListBuffer[_]]
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = childList(j).toString.toBoolean
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
   def buildMatrixDouble(data: String): Array[Array[Double]] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
     if (data.equals("[]")){
@@ -236,6 +293,27 @@ object Build {
     results
   }
 
+  def buildMatrixDouble(list: ListBuffer[_]): Array[Array[Double]] = {
+    if (list==null) return null
+    if (list.size == 0) return ofDim[Double](0,0)
+    if (list(0) == null || !list(0).isInstanceOf[ListBuffer[_]] || list(0).asInstanceOf[ListBuffer[_]].size == 0) return ofDim[Double](0,0)
+
+    val row = list.size
+    val cow = list(0).asInstanceOf[ListBuffer[_]].size
+    val results = ofDim[Double](row, cow)
+    var i = 0
+    while (i < row) {
+      val childList = list(i).asInstanceOf[ListBuffer[_]]
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = childList(j).toString.toDouble
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
   def buildMatrixFloat(data: String): Array[Array[Float]] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
     if (data.equals("[]")){
@@ -253,6 +331,28 @@ object Build {
       var j = 0
       while (j < cow) {
         results(i)(j) = arr2(j).trim.toFloat
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
+
+  def buildMatrixFloat(list: ListBuffer[_]): Array[Array[Float]] = {
+    if (list==null) return null
+    if (list.size == 0) return ofDim[Float](0,0)
+    if (list(0) == null || !list(0).isInstanceOf[ListBuffer[_]] || list(0).asInstanceOf[ListBuffer[_]].size == 0) return ofDim[Float](0,0)
+
+    val row = list.size
+    val cow = list(0).asInstanceOf[ListBuffer[_]].size
+    val results = ofDim[Float](row, cow)
+    var i = 0
+    while (i < row) {
+      val childList = list(i).asInstanceOf[ListBuffer[_]]
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = childList(j).toString.toFloat
         j += 1
       }
       i += 1
