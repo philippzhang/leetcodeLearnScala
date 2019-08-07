@@ -165,6 +165,28 @@ object Build {
     results
   }
 
+  def buildMatrix(list: ListBuffer[_]): Array[Array[Int]] = {
+    if (list==null) return null
+    if (list.size == 0) return ofDim[Int](0,0)
+    if (list(0) == null || !list(0).isInstanceOf[ListBuffer[_]] || list(0).asInstanceOf[ListBuffer[_]].size == 0) return ofDim[Int](0,0)
+
+    val row = list.size
+    val cow = list(0).asInstanceOf[ListBuffer[_]].size
+    val results = ofDim[Int](row, cow)
+
+    var i = 0
+    while (i < row) {
+      val childList = list(i).asInstanceOf[ListBuffer[_]]
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = childList(j).toString.toInt;
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
 
   def buildMatrixBoolean(data: String): Array[Array[Boolean]] = {
     if (data == null || data.trim.length == 0 || data.equals("null") || data.indexOf("[") < 0) return null
@@ -271,6 +293,28 @@ object Build {
   }
 
 
+  def buildMatrixChar(list: ListBuffer[_]): Array[Array[Char]] = {
+    if (list==null) return null
+    if (list.size == 0) return ofDim[Char](0,0)
+    if (list(0) == null || !list(0).isInstanceOf[ListBuffer[_]] || list(0).asInstanceOf[ListBuffer[_]].size == 0) return ofDim[Char](0,0)
+
+    val row = list.size
+    val cow = list(0).asInstanceOf[ListBuffer[_]].size
+    val results = ofDim[Char](row, cow)
+    var i = 0
+    while (i < row) {
+      val childList = list(i).asInstanceOf[ListBuffer[_]]
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = StringUtil.changeStr(childList(j).toString).charAt(0);
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
+
   /**
     * 构建二维字符串数组
     * 例如[["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]
@@ -295,6 +339,27 @@ object Build {
       var j = 0
       while (j < cow) {
         results(i)(j) = StringUtil.changeStr(arr2(j).trim)
+        j += 1
+      }
+      i += 1
+    }
+    results
+  }
+
+  def buildMatrixString(list: ListBuffer[_]): Array[Array[String]] = {
+    if (list==null) return null
+    if (list.size == 0) return ofDim[String](0,0)
+    if (list(0) == null || !list(0).isInstanceOf[ListBuffer[_]] || list(0).asInstanceOf[ListBuffer[_]].size == 0) return ofDim[String](0,0)
+
+    val row = list.size
+    val cow = list(0).asInstanceOf[ListBuffer[_]].size
+    val results = ofDim[String](row, cow)
+    var i = 0
+    while (i < row) {
+      val childList = list(i).asInstanceOf[ListBuffer[_]]
+      var j = 0
+      while (j < cow) {
+        results(i)(j) = StringUtil.changeStr(childList(j).toString.trim)
         j += 1
       }
       i += 1

@@ -463,13 +463,25 @@ object Utilitys {
                         val array = Build.buildArray(data.toString.asInstanceOf[ListBuffer[_]])
                         inputObjArr(k) = array
                       }
+                      else if (parameterName.equals("[[I")&& data.isInstanceOf[ListBuffer[_]]) {
+                        val matrix = Build.buildMatrix(data.toString.asInstanceOf[ListBuffer[_]])
+                        inputObjArr(k) = matrix
+                      }
                       else if (parameterName.equals("[C") && data.isInstanceOf[ListBuffer[_]]) {
                         val array = Build.buildArrayChar(data.toString.asInstanceOf[ListBuffer[_]])
                         inputObjArr(k) = array
                       }
+                      else if (parameterName.equals("[[C") && data.isInstanceOf[ListBuffer[_]]) {
+                        val matrix = Build.buildMatrixChar(data.toString.asInstanceOf[ListBuffer[_]])
+                        inputObjArr(k) = matrix
+                      }
                       else if (parameterName.equals("[Ljava.lang.String;") && data.isInstanceOf[ListBuffer[_]]) {
                         val array = Build.buildArrayString(data.toString.asInstanceOf[ListBuffer[_]])
                         inputObjArr(k) = array
+                      }
+                      else if (parameterName.equals("[[Ljava.lang.String;") && data.isInstanceOf[ListBuffer[_]]) {
+                        val matrix = Build.buildMatrixString(data.toString.asInstanceOf[ListBuffer[_]])
+                        inputObjArr(k) = matrix
                       }
                       else if (parameterName.equals("scala.collection.mutable.ListBuffer") && data.isInstanceOf[ListBuffer[_]]) {
                         val list = data.asInstanceOf[ListBuffer[_]]
@@ -557,21 +569,29 @@ object Utilitys {
                 } else if (parameterName.equals("java.lang.String")) {
                   inputObjArr(j) = StringUtil.changeStr(data.toString)
                 }
-                else if (parameterName.equals("[I")) {
-                  val array = Build.buildArray(data.toString)
+                else if (parameterName.equals("[I")&& data.isInstanceOf[ListBuffer[_]]) {
+                  val array = Build.buildArray(data.toString.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = array
                 }
-                else if (parameterName.equals("[C")) {
-                  val array = Build.buildArrayChar(data.toString)
-                  inputObjArr(j) = array
-                }
-                else if (parameterName.equals("[[I")) {
-                  val matrix = Build.buildMatrix(data.toString)
+                else if (parameterName.equals("[[I")&& data.isInstanceOf[ListBuffer[_]]) {
+                  val matrix = Build.buildMatrix(data.toString.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = matrix
                 }
-                else if (parameterName.equals("[Ljava.lang.String;")) {
-                  val array = Build.buildArrayString(data.toString)
+                else if (parameterName.equals("[C")&& data.isInstanceOf[ListBuffer[_]]) {
+                  val array = Build.buildArrayChar(data.toString.asInstanceOf[ListBuffer[_]])
                   inputObjArr(j) = array
+                }
+                else if (parameterName.equals("[[C") && data.isInstanceOf[ListBuffer[_]]) {
+                  val matrix = Build.buildMatrixChar(data.toString.asInstanceOf[ListBuffer[_]])
+                  inputObjArr(j) = matrix
+                }
+                else if (parameterName.equals("[Ljava.lang.String;")&& data.isInstanceOf[ListBuffer[_]]) {
+                  val array = Build.buildArrayString(data.toString.asInstanceOf[ListBuffer[_]])
+                  inputObjArr(j) = array
+                }
+                else if (parameterName.equals("[[Ljava.lang.String;") && data.isInstanceOf[ListBuffer[_]]) {
+                  val matrix = Build.buildMatrixString(data.toString.asInstanceOf[ListBuffer[_]])
+                  inputObjArr(j) = matrix
                 }
                 else if (parameterName.equals("scala.collection.mutable.ListBuffer")) {
                   val list = Build.buildListBuffer(data.toString)
