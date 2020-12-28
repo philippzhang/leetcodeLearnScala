@@ -5,6 +5,7 @@ import com.learn.scala.leetcode.base.structure.TreeNode
 object Solution {
   var ret:Int = Int.MinValue
   def maxPathSum(root: TreeNode): Int = {
+    //每次必须初始化一次
     ret = Int.MinValue
     getPathSum(root)
     ret
