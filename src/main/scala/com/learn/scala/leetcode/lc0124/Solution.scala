@@ -10,6 +10,7 @@ object Solution {
     ret
   }
 
+
   def getPathSum(root: TreeNode): Int = {
     if(root == null){
       return 0
